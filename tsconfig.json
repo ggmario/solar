@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@assets": ["src/assets"],
+            "@components": ["src/components"],
+            "@layouts": ["src/layouts"],
+            "@pages": ["src/pages"],
+            "@router": ["src/router"],
+            "@styles": ["src/styles"]
+        },
+        "types": ["node", "history", "mdx", "@babel/core", "aria-query", "estree"],
+        "jsx": "react-jsx",
+        "strict": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "target": "ESNext",
+        "module": "ESNext",
+        "noEmit": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true
+    },
+    "include": ["src", "src/vite-env.d.ts"]
+}

@@ -1,0 +1,189 @@
+// _variables.scss 또는 상단에 정의
+$menu-min-width: 150px;
+$check-area-width: var(--spacing-6);
+$menu-item-radius: calc(var(--radius-lg) - var(--spacing-1));
+
+// 믹스인: 그리드 레이아웃 공통화
+@mixin menu-grid-layout($check-width: 0) {
+  display: grid;
+  grid-template-columns: 
+    var(--spacing-3) 
+    $check-width 
+    auto 1fr auto 
+    var(--spacing-3);
+}
+
+.react-aria-Menu {
+  @include menu-grid-layout(var(--check-width, 0));
+  min-height: 0;
+  max-height: inherit;
+  overflow: auto;
+  min-width: $menu-min-width;
+  outline: none;
+  border-radius: inherit;
+  grid-auto-rows: max-content;
+  box-sizing: border-box;
+  --check-width: 0;
+  background: #fff;
+  border: 1px solid var(--gray-gray-40, #C6C6C6);
+
+
+  // 선택 모드가 있는 경우 체크 영역 확보
+  &:has(> [data-selection-mode]) {
+    --check-width: #{$check-area-width};
+  }
+
+  // 데이터가 없을 때의 스타일
+  &[data-empty] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    min-height: var(--spacing-8);
+  }
+
+  // 구분선 스타일
+  .react-aria-Separator {
+    grid-column: 1 / -1;
+    margin: 0 var(--spacing-2);
+    border: 0;
+    border-top: 0.5px solid var(--border-color);
+    height: auto;
+    width: auto;
+
+    .react-aria-MenuItem + & {
+      margin-block-start: var(--spacing-1);
+    }
+
+    &:has(+ .react-aria-MenuItem) {
+      margin-block-end: var(--spacing-1);
+    }
+  }
+}
+
+.react-aria-MenuItem {
+  position: relative;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid; // 부모 그리드 유지
+  grid-template-areas: 
+    ". check icon label end ."
+    ". . . desc end .";
+  align-items: center;
+  margin-inline: var(--spacing-1);
+  padding: calc((var(--spacing-8) - 1lh) / 2) 0;
+  border-radius: $menu-item-radius;
+  outline: none;
+  cursor: default;
+  color: var(--text-color);
+  font: var(--font-size) system-ui;
+  forced-color-adjust: none;
+  -webkit-tap-highlight-color: transparent;
+   color: #1D1D1D;
+
+  // 아이콘 스타일 (체크, 도트, 화살표 제외)
+  > svg:not(.lucide-check, .lucide-dot, .lucide-chevron-right) {
+    grid-area: icon;
+    width: var(--spacing-4);
+    height: var(--spacing-4);
+    justify-self: center;
+    margin-inline-end: var(--spacing-2);
+  }
+
+  // 상하단 마진 처리
+  &:first-of-type { margin-top: var(--spacing); }
+  &:last-of-type { margin-bottom: var(--spacing); }
+
+  // 상태별 배경색 및 색상
+  &[data-open],
+  &[data-pressed] {
+    background: #FFEEF4;
+    color: #D70251;
+  }
+
+  &[data-focused] {
+    background: #FFEEF4;
+    color: #D70251;
+
+    kbd {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  &[data-disabled] {
+    color: var(--text-color-disabled);
+  }
+
+  // 선택 모드 시 체크 아이콘
+  &[data-selection-mode] {
+    .lucide-check, .lucide-dot {
+      grid-area: check;
+      width: var(--spacing-4);
+      height: var(--spacing-4);
+    }
+    .lucide-check { stroke-width: 3px; }
+    .lucide-dot { scale: 3; }
+  }
+
+  // 텍스트 및 라벨
+  .react-aria-Text:not([slot]),
+  [slot="label"] {
+    grid-area: label;
+    font-size: 15PX;
+    font-weight: 600;
+  }
+
+  [slot="description"] {
+    grid-area: desc;
+    font-size: var(--font-size-sm);
+  }
+
+  // 단축키 가이드 (KBD)
+  kbd {
+    grid-area: end;
+    justify-self: end;
+    margin-inline-start: var(--spacing-4);
+    font-family: system-ui;
+    font-size: var(--font-size-sm);
+    text-align: end;
+    background: var(--highlight-hover);
+    border: 0.5px solid var(--highlight-pressed);
+    padding: 0 var(--spacing-1);
+    border-radius: var(--radius-sm);
+  }
+
+  // 서브메뉴 화살표
+  .lucide-chevron-right {
+    grid-area: end;
+    margin-left: var(--spacing-1);
+    justify-self: end;
+    width: var(--spacing-4);
+    height: var(--spacing-4);
+  }
+
+  &[href] {
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.react-aria-MenuSection {
+  @include menu-grid-layout(var(--check-width, 0));
+  grid-column: 1 / -1;
+  --check-width: 0;
+
+  &:has(> [data-selection-mode]) {
+    --check-width: #{$check-area-width};
+  }
+
+  .react-aria-Header {
+    grid-column: 1 / -1;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    padding: var(--spacing-1) var(--spacing-3);
+    background: #fff;
+    cursor: default;
+    user-select: none;
+  }
+}
