@@ -16,13 +16,13 @@ export default function KakaoMap({ plants, onSelect }: Props) { // 👈 Props �
 
         kakao.maps.load(() => {
             const options = {
-                center: new kakao.maps.LatLng(36.5, 127.5), // 대한민국 중심쯤으로 이동
-                level: 12
+                center: new kakao.maps.LatLng(35.731178, 128.470532), // 대한민국 중심쯤으로 이동
+                level: 11
             };
             const map = new kakao.maps.Map(mapElement.current, options);
 
             // 이미지 설정 (기존 코드 유지)
-            const imageSrc ="http://localhost:5173/src/assets/images/ico_map.png";
+            const imageSrc ="../src/assets/images/ico_map.png";
             const imageSize = new kakao.maps.Size(34, 35);
             const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 

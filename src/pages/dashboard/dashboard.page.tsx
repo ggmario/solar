@@ -1,8 +1,9 @@
 
+import { useState } from 'react'; // 👈 useState 추가
 import { IconComponent, Select, SelectItem, TitleComponent, ButtonComponent, StatusContComponent, TabList, Tabs, Tab, TabPanels, TabPanel, TopBoxComponent, InfoGroupComponent, InfoBoxComponent, InfoBoxGroup, Meter, TextBoxGroup, TextBoxComponent, LineChartComponent } from "@components";
-// // 데이터와 타입 가져오기
+import KakaoMap from "../../components/kakaoMap/KakaoMap";
+// 데이터와 타입 가져오기
 import { PLANT_DATA_LIST, PlantData } from "./dashboard.data";
-import KakaoMap from "src/components/kakaoMap/KakaoMap";
 
 // 상수 분리
 const PLANTS = [
@@ -114,27 +115,35 @@ function TodayPowerGeneration() {
     );
 }
 
-function WeatherInfoSection() {
+function WeatherInfoSection({ data }: { data: PlantData }) {
     return (
         <InfoGroupComponent
             title={
                 <>
                     기상정보
-                    <Badge variant="observatory">서울관측소</Badge>
+                    <Badge variant="observatory">{data.title}관측소</Badge>
                 </>
             }
             extra={<IconComponent name="arrow_down02" size={16} cursor="pointer" />}
         >
             <InfoBoxGroup>
-                {WEATHER_DATA.map((item, index) => (
-                    <InfoBoxComponent key={`weather-${index}`} icon={item.icon} title={item.title} count={item.count} unit={item.unit} />
-                ))}
+
+                {/*{WEATHER_DATA.map((item, index) => (*/}
+                {/*    <InfoBoxComponent key={`weather-${index}`} icon={item.icon} title={item.title} count={item.count} unit={item.unit} />*/}
+                {/*))}*/}
+                <InfoBoxComponent icon="temp" title="온도" count={data.weather.temp} unit="℃" />
+                <InfoBoxComponent icon="humidity" title="습도" count={data.weather.humidity} unit="%" />
+                <InfoBoxComponent icon="wind" title="풍속" count={data.weather.wind} unit="m/s" />
+                <InfoBoxComponent icon="solar" title="일사량" count={data.weather.solar} unit="W/m²" />
+                <InfoBoxComponent icon="dust" title="PM10" count={data.weather.pm10} unit="μg/m³" />
+                <InfoBoxComponent icon="dust" title="PM2.5" count={data.weather.pm25} unit="μg/m³" />
+
             </InfoBoxGroup>
         </InfoGroupComponent>
     );
 }
 
-function PlantDetailSection() {
+function PlantDetailSection({ data }: { data: PlantData }) {
     return (
         <InfoGroupComponent
             title={
@@ -146,18 +155,29 @@ function PlantDetailSection() {
             extra={<IconComponent name="arrow_down02" size={16} cursor="pointer" />}
         >
             <InfoBoxGroup>
-                {PLANT_DETAIL_DATA.map((item, index) => (
-                    <InfoBoxComponent key={`plant-detail-${index}`} icon={item.icon} title={item.title} count={item.count} unit={item.unit} />
-                ))}
-                <InfoBoxComponent icon="battery02" title="가동률" count={23.3} unit="%" rightSide>
-                    <Meter value={25} />
+
+                {/*{PLANT_DETAIL_DATA.map((item, index) => (*/}
+                {/*    <InfoBoxComponent key={`plant-detail-${index}`} icon={item.icon} title={item.title} count={item.count} unit={item.unit} />*/}
+                {/*))}*/}
+                <InfoBoxComponent icon="battery" title="설비용량" count={data.detail.capacity} unit="kW" />
+                <InfoBoxComponent icon="energy" title="현재출력" count={data.detail.output} unit="kW" />
+                <InfoBoxComponent icon="factory" title="금일 발전량" count={data.detail.todayGen} unit="MWh" />
+                <InfoBoxComponent icon="battery02" title="가동률" count={data.detail.rate} unit="%" rightSide>
+                    <Meter value={data.detail.rate} />
                 </InfoBoxComponent>
             </InfoBoxGroup>
 
             <TextBoxGroup>
-                {PLANT_INFO_DATA.map((item, index) => (
-                    <TextBoxComponent key={`plant-info-${index}`} title={item.title} content={item.content} />
-                ))}
+
+                {/*{PLANT_INFO_DATA.map((item, index) => (*/}
+                {/*    <TextBoxComponent key={`plant-info-${index}`} title={item.title} content={item.content} />*/}
+                {/*))}*/}
+                <TextBoxComponent title="지역" content={data.detail.region} />
+                <TextBoxComponent title="LMP 존" content={data.detail.lmp} />
+
+                {/* 좌표 소수점 예쁘게 자르기 */}
+                <TextBoxComponent title="위치" content={`${data.lat.toFixed(3)}, ${data.lng.toFixed(3)}`} />
+                <TextBoxComponent title="최종 업데이트" content={data.detail.updateTime} />
             </TextBoxGroup>
 
             <ButtonComponent variant="primary" icon={<IconComponent name="link" color="white" />}>
@@ -169,6 +189,8 @@ function PlantDetailSection() {
 
 // 메인 컴포넌트
 export function DashboardPage() {
+    // 🌟 상태 관리: 현재 선택된 발전소 (초기값은 첫 번째 발전소)
+    const [selectedPlant, setSelectedPlant] = useState<PlantData>(PLANT_DATA_LIST[0]);
     return (
         <>
             <div className="title-group">
@@ -182,13 +204,17 @@ export function DashboardPage() {
 
             <div className="group flex-1">
                 <div style={{ flex: 1, background: "#eee" }}>
-                    <KakaoMap plants={PLANT_DATA_LIST} onSelect={setSelectedPlant} />
+                    <KakaoMap
+                        plants={PLANT_DATA_LIST}
+                        onSelect={setSelectedPlant}
+                    />
                 </div>
 
                 <div className="row-group" style={{ width: 440 }}>
                     <TodayPowerGeneration />
-                    <WeatherInfoSection />
-                    <PlantDetailSection />
+                    {/* 🌟 [핵심] 수정된 부분: selectedPlant 데이터를 하위 컴포넌트로 전달 */}
+                    <WeatherInfoSection data={selectedPlant} />
+                    <PlantDetailSection data={selectedPlant} />
                 </div>
             </div>
         </>
