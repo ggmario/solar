@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 interface TextBoxGroupProps {
@@ -5,7 +6,8 @@ interface TextBoxGroupProps {
 }
 
 interface TextBoxProps {
-    title: string;
+    width?: number | string;
+    title: string | React.ReactNode;
     content: string;
 }
 
@@ -38,9 +40,9 @@ const Content = styled.div`
     letter-spacing: -1px;
 `;
 
-export const TextBoxComponent: React.FC<TextBoxProps> = ({ title, content }) => {
+export const TextBoxComponent: React.FC<TextBoxProps> = ({ width, title, content }) => {
     return (
-        <TextBox>
+        <TextBox style={{ width: width }}>
             <Title>{title}</Title>
             <Content>{content}</Content>
         </TextBox>

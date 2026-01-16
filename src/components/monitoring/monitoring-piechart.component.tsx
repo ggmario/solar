@@ -20,7 +20,7 @@ export function PieChartComponent({
   data, 
   total, 
   centerText = "전체 장비 수", 
-  width = 250, 
+  width = '100%', 
   height = 250 
 }: PieChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
