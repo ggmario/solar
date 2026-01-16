@@ -6,6 +6,7 @@ export * from './button';
 export * from './tab';
 export * from './table';
 export * from './metor';
+export * from './kakaoMap';
 export * from './checkbox';
 export * from './dashboard';
 export * from './monitoring';
