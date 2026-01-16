@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { SidebarLayout, HeaderLayout  } from '@layouts';
+
+
 export interface HeaderInfo {
   title: string;
   breadcrumbs: string[];
@@ -11,6 +13,7 @@ export interface HeaderContextType {
 }
 
 export function ApprovedLayout() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(true);
 
   const handleDrawerToggle = () => setOpen((prev) => !prev);
@@ -43,6 +46,12 @@ export function ApprovedLayout() {
     overflowY: 'auto',
   };
 
+   const handleNavigate = (path: string) => {
+    console.log('handleNavigate called with:', path); // 디버깅
+    console.log('Current location:', location.pathname); // 현재 위치
+    navigate(path);
+  };
+
   return (
     <div>
       <div style={layoutContainerStyle}>
@@ -50,6 +59,7 @@ export function ApprovedLayout() {
         <SidebarLayout 
           open={open} 
           handleDrawerToggle={handleDrawerToggle} 
+          onNavigate={handleNavigate}
         />
 
         {/* 오른쪽 메인 영역 */}

@@ -11,11 +11,13 @@ const CLOSED_WIDTH = 72;
 interface SidebarLayoutProps {
   open: boolean;
   handleDrawerToggle: () => void;
+  onNavigate?: (path: string) => void; // 추가: 네비게이션 콜백
 }
 
 interface MenuItem {
   text: string;
   icon?: React.ReactNode;
+  path?: string; // 추가: 라우팅 경로
   children?: MenuItem[];
 }
 
@@ -28,6 +30,7 @@ interface NestedListItemProps {
   setExpandedPath: (path: string[]) => void;
   currentPath: string[];
   depth?: number;
+  onNavigate?: (path: string) => void; // 추가
 }
 
 // style
@@ -144,33 +147,33 @@ const StyledTooltip = styled(Tooltip)`
   padding: 6px 12px;
   border-radius: 4px;
   font-size: 13px;
-  z-index: 2000; /* 사이드바보다 위에 뜨도록 */
+  z-index: 2000;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 
-  /* 화살표(말풍선 꼬리) 스타일 */
   &[data-placement='right'] { margin-left: 8px; }
   
-  /* 애니메이션 */
   &[data-entering] { opacity: 0; }
   &[data-entered] { opacity: 1; transition: opacity 0.15s; }
 `;
-// menu data
+
+// menu data - path 추가
 const menuItems: MenuItem[] = [
-  { text: "현황 대시보드", icon: "menu01" },
+  { text: "현황 대시보드", icon: "menu01", path: "/dashboard" },
   {
     text: "현황 장비 정보",
     icon: "menu02",
     children: [
       {
         text: "장비 등록",
+        path: "/equipment",
         children: [
-          { text: "발전구조설비" },
-          { text: "발전생산설비" },
-          { text: "계통연계설비" },
-          { text: "에너지저장설비" },
-          { text: "환경계측설비" },
-          { text: "보안·방재설비" },
-          { text: "운영관리설비" },
+          { text: "발전구조설비", path: "/equipment/power-structure" },
+          { text: "발전생산설비", path: "/equipment/power-production" },
+          { text: "계통연계설비", path: "/equipment/grid-connection" },
+          { text: "에너지저장설비", path: "/equipment/energy-storage" },
+          { text: "환경계측설비", path: "/equipment/environmental" },
+          { text: "보안·방재설비", path: "/equipment/security" },
+          { text: "운영관리설비", path: "/equipment/operation" },
         ],
       },
     ],
@@ -178,33 +181,33 @@ const menuItems: MenuItem[] = [
   {
     text: "발전소 기초 정보",
     icon: "menu03",
-    children: [{ text: "발전소 등록" }],
+    children: [{ text: "발전소 등록", path: "/plant/register" }],
   },
-  { text: "발전소 모니터링", icon: "menu04" },
-  { text: "외부기관", icon: "menu05" },
+  { text: "발전소 모니터링", icon: "menu04", path: "/monitoring" },
+  { text: "외부기관", icon: "menu05", path: "/external" },
   {
     text: "전력 거래",
     icon: "menu06",
     children: [
-      { text: "SMP/REC 단가" },
-      { text: "거래 현황 미 실적" },
-      { text: "REC 발급 관리 -3" },
-      { text: "계약 관리" },
-      { text: "발전량 예측" },
+      { text: "SMP/REC 단가", path: "/trade/smp-rec" },
+      { text: "거래 현황 미 실적", path: "/trade/status" },
+      { text: "REC 발급 관리 -3", path: "/trade/rec-management" },
+      { text: "계약 관리", path: "/trade/contract" },
+      { text: "발전량 예측", path: "/trade/forecast" },
     ],
   },
-  { text: "정산거래", icon: "menu07" },
-  { text: "분석보고", icon: "menu08" },
+  { text: "정산거래", icon: "menu07", path: "/settlement" },
+  { text: "분석보고", icon: "menu08", path: "/analysis" },
   {
     text: "운영관리",
     icon: "menu09",
     children: [
-      { text: "유지보수" },
-      { text: "KPI 지표설정" },
-      { text: "발전운용 KPI관리" },
+      { text: "유지보수", path: "/operation/maintenance" },
+      { text: "KPI 지표설정", path: "/operation/kpi-setup" },
+      { text: "발전운용 KPI관리", path: "/operation/kpi-management" },
     ],
   },
-  { text: "공유/협력", icon: "menu10" },
+  { text: "공유/협력", icon: "menu10", path: "/collaboration" },
 ];
 
 // 로고 컴포넌트
@@ -224,6 +227,7 @@ function NestedListItem({
   setExpandedPath,
   currentPath,
   depth = 0,
+  onNavigate,
 }: NestedListItemProps) {
   const hasChildren = item.children && item.children.length > 0;
   const isDirectActive = activeText === item.text;
@@ -247,6 +251,11 @@ function NestedListItem({
       }
     }
     setActiveText(item.text);
+    
+    // path가 있으면 네비게이션 실행
+    if (item.path && onNavigate) {
+      onNavigate(item.path);
+    }
   };
 
  return (
@@ -298,6 +307,7 @@ function NestedListItem({
               setExpandedPath={setExpandedPath}
               currentPath={[...currentPath, child.text]}
               depth={depth + 1}
+              onNavigate={onNavigate}
             />
           ))}
         </div>
@@ -307,7 +317,7 @@ function NestedListItem({
 }
 
 // --- SidebarLayout ---
-export function SidebarLayout({ open, handleDrawerToggle }: SidebarLayoutProps) {
+export function SidebarLayout({ open, handleDrawerToggle, onNavigate }: SidebarLayoutProps) {
   const [activeText, setActiveText] = useState<string>("현황 대시보드");
   const [expandedPath, setExpandedPath] = useState<string[]>([]);
 
@@ -334,6 +344,7 @@ export function SidebarLayout({ open, handleDrawerToggle }: SidebarLayoutProps) 
               expandedPath={expandedPath}
               setExpandedPath={setExpandedPath}
               currentPath={[item.text]}
+              onNavigate={onNavigate}
             />
           ))}
         </div>

@@ -11,9 +11,11 @@ interface InfoBoxGroupProps {
 }
 
 interface InfoBoxProps {
+  bg?: string;
   icon: string;
   title: string;
   count: number | string;
+  totalCount?: number | string;
   unit?: string;
   rightSide?: ReactNode;
   children?: ReactNode;
@@ -30,6 +32,7 @@ export const InfoBoxGroup = styled.div<InfoBoxGroupProps>`
 const InfoBox = styled.div`
   min-width: 140px;
   min-height: 62px;
+  max-height: 66px;
   padding: 12px 16px;
   border-radius: 8px;
   background: rgba(232, 228, 235, 0.45);
@@ -58,6 +61,15 @@ const Count = styled.div`
   line-height: 1rem;
   margin-left: 4px;
 
+  span {
+    color: #ACACAC;
+
+    b {
+      font-weight: 400;
+      margin: 0 2px
+    }
+  }
+
   small {
     font-size: 1rem;
     font-weight: normal;
@@ -70,16 +82,18 @@ const Content = styled.div`
 `;
 
 export const InfoBoxComponent: React.FC<InfoBoxProps> = ({ 
+  bg,
   icon, 
   title, 
-  count, 
+  count,
+  totalCount, 
   unit,
   rightSide,
   children 
 }) => {
   return (
     <InfoBoxGroup>
-        <InfoBox>
+        <InfoBox style={{ background: bg }}>
           <HeaderRow $isSpread={!!rightSide}>
             <Title>
                 <IconComponent name={icon} size={20} />
@@ -87,6 +101,7 @@ export const InfoBoxComponent: React.FC<InfoBoxProps> = ({
             </Title>
             <Count>
                 {count}
+                {totalCount && <span><b>/</b>{totalCount}</span>}
                 {unit && <small>{unit}</small>}
             </Count>
          </HeaderRow>

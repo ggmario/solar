@@ -7,3 +7,4 @@ export * from './tab';
 export * from './metor';
 export * from './checkbox';
 export * from './dashboard';
+export * from './monitoring';

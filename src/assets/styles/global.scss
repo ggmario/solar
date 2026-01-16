@@ -36,6 +36,9 @@ a:focus,
 a:visited {
   text-decoration: none;
 }
+:focus-visible {
+  outline: 1px dashed #000;
+}
 textarea {
   overflow: auto;
 }
@@ -212,15 +215,36 @@ body {
   justify-content: space-between;
   align-items: end;
   margin-bottom: 4px;
+
+  h2 {
+    + span {
+      &::before {
+        display: inline-block;
+        content: '';
+        width: 1px;
+        height: 12px;
+        background: #C6C6C6;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+    }
+  }
 }
 
 .group {
   display: flex;
   gap: 16px;
+  min-height: 0; 
 }
-
 .row-group {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: 100%;
+  min-height: 0;
+}
+
+.flex-1 {
+  flex: 1;
+  min-height: 0;
 }
