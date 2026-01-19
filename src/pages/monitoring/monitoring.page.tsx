@@ -32,12 +32,12 @@ const PLANT_SUMMARY_DATA = [
 
 const TABLE_ROWS = [
   { id: "row-1", label: "어제", time: "3.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "3.00 tCO₂" },
-  { id: "row-2", label: "오늘", time: "2.0 h", gen: "0.0 MWh", trans: "0 MWh", rate: "0 %", co2: "0.00 tCO₂" },
+  { id: "row-2", label: "오늘", time: "2.0 h", gen: "0.1 MWh", trans: "0 MWh", rate: "0 %", co2: "0.00 tCO₂" },
   { id: "row-3", label: "지난달", time: "120.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "90.00 tCO₂" },
   { id: "row-4", label: "이번달", time: "76.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "756.00 tCO₂" },
   { id: "row-5", label: "금년", time: "76.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "1,095.00 tCO₂" },
-  { id: "row-6", label: "작년", time: "1400.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "4,500.00 tCO₂" },
-  { id: "row-total", label: "누계", time: "7.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "4,500.00 tCO₂", isTotal: true },
+  { id: "row-6", label: "작년", time: "1,400.5 h", gen: "4.2 MWh", trans: "4.1 MWh", rate: "94.5 %", co2: "4,500.00 tCO₂" },
+  { id: "row-total", label: "누계", time: "1,679.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "4,500.00 tCO₂", isTotal: true },
 ];
 
 /** 발전소 선택 셀렉트 박스 */
