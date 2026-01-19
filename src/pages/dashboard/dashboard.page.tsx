@@ -25,18 +25,18 @@ const STATUS_DATA = [
 ];
 
 const WEATHER_DATA = [
-    { icon: "temp", title: "온도", count: 23.3, unit: "℃" },
-    { icon: "humidity", title: "습도", count: 23.3, unit: "%" },
-    { icon: "wind", title: "풍속", count: 23.3, unit: "m/s" },
-    { icon: "solar", title: "일사량", count: 23.3, unit: "W/m²" },
-    { icon: "dust", title: "PM10", count: 23.3, unit: "μg/m³" },
-    { icon: "dust", title: "PM2.5", count: 23.3, unit: "μg/m³" },
+    { icon: "temp", title: "온도", count: 24.5, unit: "℃" },
+    { icon: "humidity", title: "습도", count: 45, unit: "%" },
+    { icon: "wind", title: "풍속", count: 3.2, unit: "m/s" },
+    { icon: "solar", title: "일사량", count: 500, unit: "W/m²" },
+    { icon: "dust", title: "PM10", count: 30, unit: "μg/m³" },
+    { icon: "dust", title: "PM2.5", count: 15, unit: "μg/m³" },
 ];
 
 const PLANT_DETAIL_DATA = [
-    { icon: "battery", title: "설비용량", count: 23.3, unit: "kW" },
-    { icon: "energy", title: "현재출력", count: 23.3, unit: "kW" },
-    { icon: "factory", title: "금일 발전량", count: 23.3, unit: "MWh" },
+    { icon: "battery", title: "설비용량", count: 500, unit: "kW" },
+    { icon: "energy", title: "현재출력", count: 450, unit: "kW" },
+    { icon: "factory", title: "금일 발전량", count: 348, unit: "MWh" },
 ];
 
 const PLANT_INFO_DATA = [
