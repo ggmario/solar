@@ -8,7 +8,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist -r https://github.com/ggmario/solar.git"
   },
   "dependencies": {
     "echarts": "^6.0.0",

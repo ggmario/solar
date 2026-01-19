@@ -22,7 +22,7 @@ export default function KakaoMap({ plants, onSelect }: Props) { // 👈 Props �
             const map = new kakao.maps.Map(mapElement.current, options);
 
             // 이미지 설정 (기존 코드 유지)
-            const imageSrc ="../src/assets/images/ico_map.png";
+            const imageSrc ="../../src/assets/images/ico_map.png";
             const imageSize = new kakao.maps.Size(34, 35);
             const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
