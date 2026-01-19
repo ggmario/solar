@@ -42,7 +42,7 @@ const TABLE_ROWS = [
 /** 발전소 선택 셀렉트 박스 */
 const PlantSelector = () => (
   <form style={{ display: "flex", gap: 8 }}>
-    <Select label="" selectionMode="multiple" placeholder="발전소 선택" style={{ flex: 1, width: 200 }}>
+    <Select aria-label="발전소 선택" selectionMode="multiple" placeholder="발전소 선택" style={{ flex: 1, width: 200 }}>
       {PLANTS.map((plant) => (
         <SelectItem key={plant.id}>{plant.name}</SelectItem>
       ))}
@@ -73,28 +73,32 @@ const TopDashboardSection = () => (
 
 /** 발전 현황 표 */
 const PowerGenerationTable = () => (
-  <Table aria-label="power plant operation status table" style={{ height: '100%' }}>
-    <TableHeader style={{ height: 70 }}>
-      <Column isRowHeader>구분</Column>
-      <Column>발전 시간<br />(시간)</Column>
-      <Column>발전량<br />(MWh)</Column>
-      <Column>인버터송전량<br />(MWh)</Column>
-      <Column>AC/DC 변환율<br />(%)</Column>
-      <Column>CO₂ 감소량<br />(tCO₂)</Column>
-    </TableHeader>
-    <TableBody>
-      {TABLE_ROWS.map((row) => (
-        <Row key={row.id} className={row.isTotal ? "react-aria-Row tfoot" : "react-aria-Row"}>
-          <Cell data-scope="row">{row.label}</Cell>
-          <Cell>{row.time}</Cell>
-          <Cell>{row.gen}</Cell>
-          <Cell>{row.trans}</Cell>
-          <Cell>{row.rate}</Cell>
-          <Cell>{row.co2}</Cell>
-        </Row>
-      ))}
-    </TableBody>
-  </Table>
+  <>
+    <h3 id="caption" className="sr-only">발전 현황 표</h3>
+    <p id="summary" className="sr-only">구분, 발전시간, 발전량, 인버터송전량, AC/DC 변환율, CO₂ 감소량을 표시한 표입니다.</p>
+    <Table aria-labelledby="caption" aria-describedby="summary" style={{ height: '100%' }}>
+      <TableHeader style={{ height: 70 }}>
+        <Column isRowHeader>구분</Column>
+        <Column>발전 시간<br />(시간)</Column>
+        <Column>발전량<br />(MWh)</Column>
+        <Column>인버터송전량<br />(MWh)</Column>
+        <Column>AC/DC 변환율<br />(%)</Column>
+        <Column>CO₂ 감소량<br />(tCO₂)</Column>
+      </TableHeader>
+      <TableBody>
+        {TABLE_ROWS.map((row) => (
+          <Row key={row.id} className={row.isTotal ? "react-aria-Row tfoot" : "react-aria-Row"}>
+            <Cell data-scope="row">{row.label}</Cell>
+            <Cell>{row.time}</Cell>
+            <Cell>{row.gen}</Cell>
+            <Cell>{row.trans}</Cell>
+            <Cell>{row.rate}</Cell>
+            <Cell>{row.co2}</Cell>
+          </Row>
+        ))}
+      </TableBody>
+    </Table>
+  </>
 );
 
 export function MonitoringPage() {

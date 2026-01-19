@@ -78,7 +78,6 @@ const ToggleButton = styled(Button)<{ $open: boolean }>`
   border: none;
   background: transparent;
   cursor: pointer;
-  outline: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -213,7 +212,7 @@ const menuItems: MenuItem[] = [
 // 로고 컴포넌트
 export const LogoComponent = ({ isCollapsed }: { isCollapsed: boolean }) => (
   <h1>
-    <img src={isCollapsed ? Logo : ''} />
+    <img src={isCollapsed ? Logo : ''} alt="Wiable Energy Exchange" />
   </h1> 
 );
 
@@ -230,53 +229,54 @@ function NestedListItem({
   onNavigate,
 }: NestedListItemProps) {
   const hasChildren = item.children && item.children.length > 0;
-  const isDirectActive = activeText === item.text;
   const pathString = currentPath.join("/");
   const isExpanded = expandedPath.join("/").startsWith(pathString) && hasChildren;
 
-  const hasActiveChild = (menuItem: MenuItem): boolean => {
-    if (!menuItem.children) return false;
-    return menuItem.children.some((child) => child.text === activeText || hasActiveChild(child));
+  // 접근성
+  const handleFocus = () => {
+    if (hasChildren && drawerOpen) {
+      setExpandedPath(currentPath);
+    }
   };
-  const isParentOfActive = hasActiveChild(item);
-  const isActive = isDirectActive || isParentOfActive;
 
   const handleClick = () => {
-    if (hasChildren) {
+    setActiveText(item.text);
+    if (item.path && onNavigate) {
+      onNavigate(item.path);
+    }
+        if (hasChildren) {
       if (isExpanded) {
-        const parentPath = currentPath.slice(0, -1);
-        setExpandedPath(parentPath);
+        setExpandedPath(currentPath.slice(0, -1));
       } else {
         setExpandedPath(currentPath);
       }
     }
-    setActiveText(item.text);
-    
-    // path가 있으면 네비게이션 실행
-    if (item.path && onNavigate) {
-      onNavigate(item.path);
-    }
   };
 
- return (
-    <div style={{ position: 'relative' }}>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
       <TooltipTrigger delay={0} isDisabled={drawerOpen}>
         <ItemRow
           as={Button}
-          onClick={handleClick}
-          $isActive={isActive}
+          onPress={handleClick}
+          onFocus={handleFocus} // 탭으로 포커스 진입 시 실행
+          $isActive={activeText === item.text}
           $depth={depth}
           $open={drawerOpen}
+          aria-expanded={hasChildren ? isExpanded : undefined}
+          style={{ 
+            paddingLeft: drawerOpen ? `${depth * 12 + 12}px` : 'auto',
+            outline: 'none' // 커스텀 포커스 스타일 권장
+          }}
         >
-          {!drawerOpen && (
-            <div style={{ display: 'flex', minWidth: 24, justifyContent: 'center', color: isActive ? '#D70251' : '#333' }}>
-              <IconComponent name={(item.icon as string) || "menu01"} cursor="pointer" />
-            </div>
-          )}
-
-          {drawerOpen && (
+          {/* ... 내부 아이콘 및 라벨 렌더링 (기존과 동일) */}
+          {!drawerOpen ? (
+             <div style={{ display: 'flex', minWidth: 24, justifyContent: 'center' }}>
+                <IconComponent name={(item.icon as string) || "menu01"} />
+             </div>
+          ) : (
             <>
-              <ItemLabel $isActive={isActive} $depth={depth}>
+              <ItemLabel $isActive={activeText === item.text} $depth={depth}>
                 {item.text}
               </ItemLabel>
               {hasChildren && (
@@ -287,15 +287,12 @@ function NestedListItem({
             </>
           )}
         </ItemRow>
-
-        <StyledTooltip placement="right">
-          {item.text}
-        </StyledTooltip>
+        <StyledTooltip placement="right">{item.text}</StyledTooltip>
       </TooltipTrigger>
       
-      {/* 하위 메뉴 리스트 */}
+      {/* 하위 메뉴: isExpanded가 true가 되는 순간 DOM에 생성되어 다음 Tab 대상이 됨 */}
       {hasChildren && isExpanded && drawerOpen && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 12 }}>
+        <div role="group" style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           {item.children!.map((child, index) => (
             <NestedListItem
               key={`${child.text}-${index}`}
@@ -315,7 +312,6 @@ function NestedListItem({
     </div>
   );
 }
-
 // --- SidebarLayout ---
 export function SidebarLayout({ open, handleDrawerToggle, onNavigate }: SidebarLayoutProps) {
   const [activeText, setActiveText] = useState<string>("현황 대시보드");

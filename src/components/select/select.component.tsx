@@ -31,6 +31,7 @@ export interface SelectProps<T extends object>
 
 export function Select<T extends object>({
   label,
+  placeholder,
   description,
   errorMessage,
   children,
@@ -41,7 +42,8 @@ export function Select<T extends object>({
   return (
     <AriaSelect 
       {...props} 
-      selectionMode={selectionMode as 'single'} 
+      selectionMode={selectionMode as 'single'}
+      aria-label={label || props['aria-label'] || placeholder} 
     >
       {label && <Label>{label}</Label>}
       <Button>
