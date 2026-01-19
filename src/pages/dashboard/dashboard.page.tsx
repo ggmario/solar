@@ -2,6 +2,9 @@
 import { useState } from 'react'; // 👈 useState 추가
 import { IconComponent, Select, SelectItem, TitleComponent, ButtonComponent, StatusContComponent, TabList, Tabs, Tab, TabPanels, TabPanel, TopBoxComponent, InfoGroupComponent, InfoBoxComponent, InfoBoxGroup, Meter, TextBoxGroup, TextBoxComponent, LineChartComponent } from "@components";
 import KakaoMap from "../../components/kakaoMap/KakaoMap";
+// 👇 이 줄을 추가하세요
+import { useNavigate } from 'react-router-dom';
+
 // 데이터와 타입 가져오기
 import { PLANT_DATA_LIST, PlantData } from "./dashboard.data";
 
@@ -144,6 +147,8 @@ function WeatherInfoSection({ data }: { data: PlantData }) {
 }
 
 function PlantDetailSection({ data }: { data: PlantData }) {
+    // 👇 1. 훅 선언 (함수 최상단에 작성)
+    const navigate = useNavigate();
     return (
         <InfoGroupComponent
             title={
@@ -180,7 +185,12 @@ function PlantDetailSection({ data }: { data: PlantData }) {
                 <TextBoxComponent title="최종 업데이트" content={data.detail.updateTime} />
             </TextBoxGroup>
 
-            <ButtonComponent variant="primary" icon={<IconComponent name="link" color="white" />}>
+          {/*  <ButtonComponent variant="primary" icon={<IconComponent name="link" color="white" />}>*/}
+            <ButtonComponent
+                variant="primary"
+                icon={<IconComponent name="link" color="white" />}
+                onClick={() => navigate('/monitoring')}
+            >
                 발전소 모니터링
             </ButtonComponent>
         </InfoGroupComponent>

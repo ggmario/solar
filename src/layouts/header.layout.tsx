@@ -63,7 +63,7 @@ export function HeaderLayout() {
                             <img src={ProfileImg} alt="Profile" />
                             <dl style={{ textAlign: "left" }}>
                                 <dt style={{ fontWeight: 600 }}>wiable_admin</dt>
-                                <dd>기지국모드</dd>
+                                <dd>발전소 모드</dd>
                             </dl>
                         </div>
                         <IconComponent name="arrow_down" size={16} cursor="pointer" />
