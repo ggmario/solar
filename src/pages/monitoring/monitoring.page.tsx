@@ -22,6 +22,7 @@ const WEATHER_DATA = [
     { icon: "dust", title: "PM2.5", count: 15, unit: "μg/m³" },
 ];
 
+
 const PLANT_SUMMARY_DATA = [
   { icon: "energy", title: "현재출력", count: 1245.2, totalCount: 15000, unit: "kW" },
   { icon: "battery02", title: "가동률", count: 84.5, unit: "%" },
