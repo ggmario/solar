@@ -9,6 +9,7 @@ export default defineConfig(() => {
       react(),
       svgr(),
     ],
+      base: '/solar/',
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
