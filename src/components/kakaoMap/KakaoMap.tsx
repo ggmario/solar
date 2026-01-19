@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 // 위에서 만든 타입 임포트 (경로 맞춰주세요)
 import { PlantData } from '../../pages/dashboard/dashboard.data';
-
+import imageSrc from '@assets/images/ico_map.png'
 interface Props {
     plants: PlantData[];                  // 부모에게 받을 데이터 리스트
     onSelect: (plant: PlantData) => void; // 클릭 시 부모에게 알려줄 함수
@@ -22,7 +22,7 @@ export default function KakaoMap({ plants, onSelect }: Props) { // 👈 Props �
             const map = new kakao.maps.Map(mapElement.current, options);
 
             // 이미지 설정 (기존 코드 유지)
-            const imageSrc ="@assets/images/ico_map.png";
+            // const imageSrc = {imageSrc};
             const imageSize = new kakao.maps.Size(34, 35);
             const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
