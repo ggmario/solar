@@ -26,17 +26,17 @@ const WEATHER_DATA = [
 const PLANT_SUMMARY_DATA = [
   { icon: "energy", title: "현재출력", count: 1245.2, totalCount: 15000, unit: "kW" },
   { icon: "battery02", title: "가동률", count: 84.5, unit: "%" },
-  { icon: "feedback", title: "정상 장비", count: 12, totalCount: 30, unit: "대" },
+  { icon: "feedback", title: "정상 장비", count: 29, totalCount: 30, unit: "대" },
   { icon: "feedback", title: "평균 효율", count: 98.4, unit: "%" },
 ];
 
 const TABLE_ROWS = [
-  { id: "row-1", label: "어제", time: "7.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "3.00 tCO₂" },
-  { id: "row-2", label: "오늘", time: "0.0 h", gen: "0.0 MWh", trans: "0 MWh", rate: "0 %", co2: "0.00 tCO₂" },
-  { id: "row-3", label: "지난달", time: "7.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "90.00 tCO₂" },
-  { id: "row-4", label: "이번달", time: "7.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "756.00 tCO₂" },
-  { id: "row-5", label: "금년", time: "7.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "1,095.00 tCO₂" },
-  { id: "row-6", label: "작년", time: "7.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "4,500.00 tCO₂" },
+  { id: "row-1", label: "어제", time: "3.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "3.00 tCO₂" },
+  { id: "row-2", label: "오늘", time: "2.0 h", gen: "0.0 MWh", trans: "0 MWh", rate: "0 %", co2: "0.00 tCO₂" },
+  { id: "row-3", label: "지난달", time: "120.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "90.00 tCO₂" },
+  { id: "row-4", label: "이번달", time: "76.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "756.00 tCO₂" },
+  { id: "row-5", label: "금년", time: "76.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "1,095.00 tCO₂" },
+  { id: "row-6", label: "작년", time: "1400.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "4,500.00 tCO₂" },
   { id: "row-total", label: "누계", time: "7.5 h", gen: "0.2 MWh", trans: "0.8 MWh", rate: "89.5 %", co2: "4,500.00 tCO₂", isTotal: true },
 ];
 
