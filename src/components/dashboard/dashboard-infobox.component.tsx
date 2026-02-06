@@ -44,13 +44,14 @@ const InfoBox = styled.div`
 
 const HeaderRow = styled.div<HeaderRowProps>`
   display: flex;
-  flex-direction: ${({ $isSpread }) => ($isSpread ? 'row' : 'column' )};
-  justify-content: ${({ $isSpread }) => ($isSpread ? 'space-between' : 'flex-start' )};
+  flex-direction: ${({ $isSpread }) => ($isSpread ? "row" : "column")};
+  justify-content: ${({ $isSpread }) =>
+    $isSpread ? "space-between" : "flex-start"};
   gap: 6px;
   width: 100%;
 `;
 
-const Title = styled.div` 
+const Title = styled.div`
   display: flex;
   color: #000;
 `;
@@ -62,11 +63,11 @@ const Count = styled.div`
   margin-left: 4px;
 
   span {
-    color: #ACACAC;
+    color: #acacac;
 
     b {
       font-weight: 400;
-      margin: 0 2px
+      margin: 0 2px;
     }
   }
 
@@ -78,35 +79,45 @@ const Count = styled.div`
   }
 `;
 
-const Content = styled.div`
-`;
+const Content = styled.div``;
 
-export const InfoBoxComponent: React.FC<InfoBoxProps> = ({ 
+export const InfoBoxComponent: React.FC<InfoBoxProps> = ({
   bg,
-  icon, 
-  title, 
+  icon,
+  title,
   count,
-  totalCount, 
+  totalCount,
   unit,
   rightSide,
-  children 
+  children,
 }) => {
+  const formatNumber = (v: number | string) => {
+    if (typeof v === "number") return Number.isInteger(v) ? v : v.toFixed(1);
+    const n = Number(v);
+    if (Number.isNaN(n)) return v;
+    return Number.isInteger(n) ? v : n.toFixed(1);
+  };
   return (
     <InfoBoxGroup>
-        <InfoBox style={{ background: bg }}>
-          <HeaderRow $isSpread={!!rightSide}>
-            <Title>
-                <IconComponent name={icon} size={20} />
-                <span>{title}</span>
-            </Title>
-            <Count>
-                {count}
-                {totalCount && <span><b>/</b>{totalCount}</span>}
-                {unit && <small>{unit}</small>}
-            </Count>
-         </HeaderRow>
-         {children && <Content>{children}</Content>}
-        </InfoBox>
+      <InfoBox style={{ background: bg }}>
+        <HeaderRow $isSpread={!!rightSide}>
+          <Title>
+            <IconComponent name={icon} size={20} />
+            <span>{title}</span>
+          </Title>
+          <Count>
+            {formatNumber(count)}
+            {totalCount && (
+              <span>
+                <b>/</b>
+                {formatNumber(totalCount)}
+              </span>
+            )}
+            {unit && <small>{unit}</small>}
+          </Count>
+        </HeaderRow>
+        {children && <Content>{children}</Content>}
+      </InfoBox>
     </InfoBoxGroup>
   );
 };
