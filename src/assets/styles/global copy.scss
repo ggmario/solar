@@ -1,4 +1,4 @@
-@use "./theme";
+@use './theme';
 
 /*** reset ***/
 * {
@@ -15,8 +15,8 @@ button {
   background-color: transparent;
 }
 button {
-  font-family: 'Pretendard';
-  font-size: 1rem;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
   cursor: pointer;
 }
 hr {
@@ -129,7 +129,7 @@ strong {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   clip-path: polygon(0 0, 0 0, 0 0);
   border: 0;
 }
@@ -141,15 +141,17 @@ strong {
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 300;
-  src: url(../font/Pretendard-Light.woff2) format('woff2'),
-    url(../font/Pretendard-Light.woff) format('woff'),
-    url(../font/Pretendard-Light.otf) format('opentype');
+  src:
+    url(/font/Pretendard-Light.woff2) format('woff2'),
+    url(/font/Pretendard-Light.woff) format('woff'),
+    url(/font/Pretendard-Light.otf) format('opentype');
 }
 @font-face {
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 400;
-  src: url(../font/Pretendard-Regular.woff2) format('woff2'),
+  src:
+    url(../font/Pretendard-Regular.woff2) format('woff2'),
     url(../font/Pretendard-Regular.woff) format('woff'),
     url(../font/Pretendard-Regular.otf) format('opentype');
 }
@@ -157,7 +159,8 @@ strong {
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 500;
-  src: url(../font/Pretendard-Medium.woff2) format('woff2'),
+  src:
+    url(../font/Pretendard-Medium.woff2) format('woff2'),
     url(../font/Pretendard-Medium.woff) format('woff'),
     url(../font/Pretendard-Medium.otf) format('opentype');
 }
@@ -165,7 +168,8 @@ strong {
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 600;
-  src: url(../font/Pretendard-SemiBold.woff2) format('woff2'),
+  src:
+    url(../font/Pretendard-SemiBold.woff2) format('woff2'),
     url(../font/Pretendard-SemiBold.woff) format('woff'),
     url(../font/Pretendard-SemiBold.otf) format('opentype');
 }
@@ -173,61 +177,57 @@ strong {
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 700;
-  src: url(../font/Pretendard-Bold.woff2) format('woff2'),
+  src:
+    url(../font/Pretendard-Bold.woff2) format('woff2'),
     url(../font/Pretendard-Bold.woff) format('woff'),
     url(../font/Pretendard-Bold.otf) format('opentype');
 }
 
 /* GmarketSans */
 @font-face {
-	font-family:'GmarketSans';
-	font-style:normal;
-	font-weight:400;
-	src:url(../font/GmarketSansLight.woff2) format('woff2'),
-		url(../font/GmarketSansLight.woff) format('woff'),
-		url(../font/GmarketSansLight.otf) format('opentype');
+  font-family: 'GmarketSans';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    url(../font/GmarketSansLight.woff2) format('woff2'),
+    url(../font/GmarketSansLight.woff) format('woff'),
+    url(../font/GmarketSansLight.otf) format('opentype');
 }
 @font-face {
-	font-family:'GmarketSans';
-	font-style:normal;
-	font-weight:500;
-	src:url(../font/GmarketSansMedium.woff2) format('woff2'),
-		url(../font/GmarketSansMedium.woff) format('woff'),
-		url(../font/GmarketSansMedium.otf) format('opentype');
+  font-family: 'GmarketSans';
+  font-style: normal;
+  font-weight: 500;
+  src:
+    url(../font/GmarketSansMedium.woff2) format('woff2'),
+    url(../font/GmarketSansMedium.woff) format('woff'),
+    url(../font/GmarketSansMedium.otf) format('opentype');
 }
 @font-face {
-	font-family:'GmarketSans';
-	font-style:normal;
-	font-weight:700;
-	src:url(../font/GmarketSansBold.woff2) format('woff2'),
-		url(../font/GmarketSansBold.woff) format('woff'),
-		url(../font/GmarketSansBold.otf) format('opentype');
+  font-family: 'GmarketSans';
+  font-style: normal;
+  font-weight: 700;
+  src:
+    url(../font/GmarketSansBold.woff2) format('woff2'),
+    url(../font/GmarketSansBold.woff) format('woff'),
+    url(../font/GmarketSansBold.otf) format('opentype');
 }
-
 
 :root {
-  font-family: 'Pretendard';
-  font-size: 15px;
+  font-family: var(--font-family);
+  font-size: 16px;
 }
 
 body {
   min-width: 1600px;
-  color: #1d1d1d;
-  font-family: 'Pretendard';
-  font-size: 15px;
-  overflow-x: hidden;
+  color: var(--text-color-base);
+  font-family: var(--font-family);
+  font-size: 16px;
+  letter-spacing: -0.7px;
 
-  [class*="react-aria-"] {
-    color: #1d1d1d;
-    font-family: 'Pretendard';
-    font-size: 15px;
+  [class*='react-aria-'] {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
   }
-}
-#root{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
 }
 
 .title-group {
@@ -243,7 +243,7 @@ body {
         content: '';
         width: 1px;
         height: 12px;
-        background: #C6C6C6;
+        background: #c6c6c6;
         vertical-align: middle;
         margin-right: 8px;
       }
@@ -253,16 +253,15 @@ body {
 
 .group {
   display: flex;
-  gap: 16px;
-  min-height: 0; 
+  gap: var(--spacing-6);
 }
 .row-group {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--spacing-6);
   height: 100%;
-  min-height: 0;
 }
+
 .input-group {
   display: flex;
   flex-direction: column;
@@ -294,19 +293,19 @@ body {
 
   &.normal {
     &::before {
-      background: #1AED83;
+      background: #1aed83;
     }
   }
 
   &.checking {
     &::before {
-      background: #FFCA58;
+      background: #ffca58;
     }
   }
 
   &.error {
     &::before {
-      background: #FF5757;
+      background: #ff5757;
     }
   }
 }
@@ -372,30 +371,3 @@ body {
     background: var(--point-pink-60);
   }
 }
-
-
-.auto-login-checkbox{
-    display: flex;
-    position: relative;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    border: 0;
-  
-  .indicator {
-    border-radius: 4px;
-    width: 16px;
-    height: 16px;
-    border: 1px solid var(--gray-40);
-    transition: all 200ms;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  &[data-selected] .indicator {
-    border-color: #444242;
-    background: #444242;
-  }
-}
-.auto-login-checkbox + div>.react-aria-Button{padding:0 !important}
-.p-0{padding:0 !important}

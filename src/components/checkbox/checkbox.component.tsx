@@ -13,11 +13,7 @@ export function Checkbox({
       {({ isSelected, isIndeterminate }) => (
         <>
           <div className="indicator">
-            {isIndeterminate ? (
-              ''
-            ) : (
-              isSelected && <IconComponent name="check" cursor="pointer" />
-            )}
+            {isIndeterminate ? "" : isSelected && <IconComponent name="check" cursor="pointer"/>}
           </div>
           {children}
         </>
