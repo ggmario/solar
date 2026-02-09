@@ -8,9 +8,10 @@ import {
   TitleComponent, TopInfoBoxComponent 
 } from "@components";
 
-type WeatherItem = { icon: string; title: string; count: number; unit: string };
+// type WeatherItem = { icon: string; title: string; count: number; unit: string };
+type WeatherItem = { icon: any; title: string; count: number; unit: string };
 type SummaryItem = {
-  icon: string;
+  icon: any;
   title: string;
   count: number;
   unit: string;

@@ -120,7 +120,7 @@ function PlantSelector() {
         시설 추가
       </ButtonComponent>
       <ButtonComponent
-        variant="primary"
+        variant="contained"
         icon={<IconComponent name="link" size={20} cursor="pointer" />}
       >
         대시보드
@@ -278,7 +278,7 @@ function PlantDetailSection({ data }: { data: PlantData }) {
 
       {/*  <ButtonComponent variant="primary" icon={<IconComponent name="link" color="white" />}>*/}
       <ButtonComponent
-        variant="primary"
+        variant="contained"
         icon={<IconComponent name="link" color="white" />}
         onClick={() => navigate("/monitoring")}
       >
