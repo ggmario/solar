@@ -81,22 +81,29 @@ export const InfoBoxComponent: React.FC<InfoBoxProps> = ({
   count,
   totalCount,
   unit,
+  rightSide,
   children,
 }) => {
+  const formatNumber = (v: number | string) => {
+    if (typeof v === "number") return Number.isInteger(v) ? v : v.toFixed(1);
+    const n = Number(v);
+    if (Number.isNaN(n)) return v;
+    return Number.isInteger(n) ? v : n.toFixed(1);
+  };
   return (
     <InfoBoxGroup>
       <InfoBox style={{ background: bg }}>
-        <HeaderRow $isSpread={false}>
+        <HeaderRow $isSpread={!!rightSide}>
           <Title>
             <IconComponent name={icon} size={20} />
             <span>{title}</span>
           </Title>
           <Count>
-            {count}
+            {formatNumber(count)}
             {totalCount && (
               <span>
                 <b>/</b>
-                {totalCount}
+                {formatNumber(totalCount)}
               </span>
             )}
             {unit && <small>{unit}</small>}

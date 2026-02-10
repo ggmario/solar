@@ -106,10 +106,13 @@ export default function LoginPage() {
             <Form
               onSubmit={(e) => {
                 e.preventDefault();
-                // 아무거나 입력하면 통과 (둘 다 비어있으면 막기)
+
                 const id = values.id.trim();
                 const pw = values.password.trim();
-                if (!id || !pw) return;
+
+                // admin/admin 만 통과
+                if (id !== "admin" || pw !== "admin") return;
+
                 localStorage.setItem("ACCESS_TOKEN", "dummy");
                 nav("/dashboard", { replace: true });
               }}
@@ -119,18 +122,16 @@ export default function LoginPage() {
                 values={values}
                 onChange={(key, value) => {
                   if (key === "id") handleChange("id", String(value));
-                  if (key === "password")
-                    handleChange("password", String(value));
+                  if (key === "password") handleChange("password", String(value));
                 }}
                 columnSpacing={0}
               />
 
               <div className="side-group">
-                <Checkbox className="auto-login-checkbox"
+                <Checkbox
+                  className="auto-login-checkbox"
                   isSelected={values.autoLogin}
-                  onChange={(checked: boolean) =>
-                    handleChange("autoLogin", checked)
-                  }
+                  onChange={(checked: boolean) => handleChange("autoLogin", checked)}
                 >
                   자동 로그인
                 </Checkbox>
@@ -138,14 +139,14 @@ export default function LoginPage() {
                 <LinkGroup>
                   <ButtonComponent
                     variant="none"
-                    style={{padding:"10px"}}
+                    style={{ padding: "10px" }}
                     onClick={() => nav("/login/find-id")}
                   >
                     아이디찾기
                   </ButtonComponent>
                   <ButtonComponent
                     variant="none"
-                    style={{padding:0}}
+                    style={{ padding: 0 }}
                     onClick={() => nav("/login/find-pw")}
                   >
                     비밀번호 찾기
