@@ -197,44 +197,48 @@ const fmt = (n: number, suffix: string) => {
   return `${fixed.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${suffix}`;
 };
 
+const AVG_KEYS = new Set<SummaryItem["title"]>(["가동률", "평균 효율"]);
+
 const mergeWeather = (ids: string[]) => {
+  // 선택 없으면 기본(전체 공통) 표시
   if (!ids.length) return WEATHER_DATA;
 
+  // 선택된 것 중 첫 번째 발전소(대표) 기상만 표시
   const first = PLANT_DATA[ids[0]];
-  if (!first) return WEATHER_DATA;
-
-  const base = first.weather.map((x) => ({ ...x }));
-
-  for (let i = 1; i < ids.length; i++) {
-    const next = PLANT_DATA[ids[i]];
-    if (!next) continue;
-
-    for (let j = 0; j < base.length; j++) {
-      base[j].count += next.weather[j].count;
-    }
-  }
-
-  return base;
+  return first?.weather ?? WEATHER_DATA;
 };
 
 const mergeSummary = (ids: string[]) => {
   if (!ids.length) return PLANT_SUMMARY_DATA;
 
-  const first = PLANT_DATA[ids[0]];
-  if (!first) return PLANT_SUMMARY_DATA;
+  const list = ids.map((id) => PLANT_DATA[id]).filter(Boolean) as PlantDataItem[];
+  if (!list.length) return PLANT_SUMMARY_DATA;
 
-  const base = first.summary.map((x) => ({ ...x }));
+  const base = list[0].summary.map((x) => ({ ...x }));
 
-  for (let i = 1; i < ids.length; i++) {
-    const next = PLANT_DATA[ids[i]];
-    if (!next) continue;
+  for (let i = 1; i < list.length; i++) {
+    const next = list[i].summary;
 
     for (let j = 0; j < base.length; j++) {
-      base[j].count += next.summary[j].count;
-      if (base[j].totalCount != null || next.summary[j].totalCount != null) {
-        base[j].totalCount =
-          (base[j].totalCount ?? 0) + (next.summary[j].totalCount ?? 0);
+      const isAvg = AVG_KEYS.has(base[j].title);
+
+      if (isAvg) {
+        base[j].count += next[j].count; // 일단 누적해두고 아래에서 나눔
+        // 평균 항목은 totalCount 합산 안 함(원하면 유지 가능)
+      } else {
+        base[j].count += next[j].count;
+        if (base[j].totalCount != null || next[j].totalCount != null) {
+          base[j].totalCount =
+            (base[j].totalCount ?? 0) + (next[j].totalCount ?? 0);
+        }
       }
+    }
+  }
+
+  // 평균 항목만 선택 개수로 나눔
+  for (let j = 0; j < base.length; j++) {
+    if (AVG_KEYS.has(base[j].title)) {
+      base[j].count = Number((base[j].count / list.length).toFixed(1));
     }
   }
 
@@ -473,9 +477,9 @@ export function MonitoringPage() {
               ]}
             />
             <TextBoxGroup gap={2}>
-              <TextBoxComponent width="100%" title={<span className="dot normal" style={{ color: "#1AED83" }}>정상</span>} content={`${equipmentStatus.normal}건`} />
-              <TextBoxComponent width="100%" title={<span className="dot checking" style={{ color: "#FFCA58" }}>점검중</span>} content={`${equipmentStatus.checking}건`} />
-              <TextBoxComponent width="100%" title={<span className="dot error" style={{ color: "#FF5757" }}>오류</span>} content={`${equipmentStatus.error}건`} />
+              <TextBoxComponent width="100%" title={<span className="dot normal">정상</span>} content={`${equipmentStatus.normal}건`} />
+              <TextBoxComponent width="100%" title={<span className="dot checking">점검중</span>} content={`${equipmentStatus.checking}건`} />
+              <TextBoxComponent width="100%" title={<span className="dot error">오류</span>} content={`${equipmentStatus.error}건`} />
             </TextBoxGroup>
           </InfoGroupComponent>
 

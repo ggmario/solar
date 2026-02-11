@@ -44,7 +44,7 @@ export const IconComponent: React.FC<IconComponentProps> = ({
 
   return (
     <div
-      style={{ width: size, height: size, cursor: cursor ?? "default", display: "flex", alignItems: "center", ...styles }}
+      style={{ width: size, height: size, cursor: cursor ?? "default", display: "flex", justifyContent: "center", alignItems: "center", ...styles }}
       onClick={onClick}
       dangerouslySetInnerHTML={{ __html: styledSvg }}
     />
