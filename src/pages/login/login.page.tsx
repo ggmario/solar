@@ -111,7 +111,11 @@ export default function LoginPage() {
                 const pw = values.password.trim();
 
                 // admin/admin 만 통과
-                if (id !== "admin" || pw !== "admin") return;
+                if (id !== "admin" || pw !== "admin") {
+                  console.log("로그인 실패", { id, pw });
+                  window.alert("아이디 및 비밀번호가 잘못되었습니다.");
+                  return;
+                }
 
                 localStorage.setItem("ACCESS_TOKEN", "dummy");
                 nav("/dashboard", { replace: true });
@@ -122,7 +126,8 @@ export default function LoginPage() {
                 values={values}
                 onChange={(key, value) => {
                   if (key === "id") handleChange("id", String(value));
-                  if (key === "password") handleChange("password", String(value));
+                  if (key === "password")
+                    handleChange("password", String(value));
                 }}
                 columnSpacing={0}
               />
@@ -131,7 +136,9 @@ export default function LoginPage() {
                 <Checkbox
                   className="auto-login-checkbox"
                   isSelected={values.autoLogin}
-                  onChange={(checked: boolean) => handleChange("autoLogin", checked)}
+                  onChange={(checked: boolean) =>
+                    handleChange("autoLogin", checked)
+                  }
                 >
                   자동 로그인
                 </Checkbox>
@@ -154,7 +161,12 @@ export default function LoginPage() {
                 </LinkGroup>
               </div>
 
-              <ButtonComponent type="submit" variant="contained" mt={20}>
+              <ButtonComponent
+                type="submit"
+                variant="contained"
+                mt={20}
+                onClick={() => console.log("버튼 클릭됨")}
+              >
                 로그인
               </ButtonComponent>
 
@@ -218,10 +230,20 @@ export default function LoginPage() {
           </p>
 
           <LinkGroup>
-            <ButtonComponent variant="none" underline onClick={() => {}} className="p-0">
+            <ButtonComponent
+              variant="none"
+              underline
+              onClick={() => {}}
+              className="p-0"
+            >
               이용약관
             </ButtonComponent>
-            <ButtonComponent variant="none" underline onClick={() => {}} className="p-0">
+            <ButtonComponent
+              variant="none"
+              underline
+              onClick={() => {}}
+              className="p-0"
+            >
               개인정보처리방침
             </ButtonComponent>
           </LinkGroup>
