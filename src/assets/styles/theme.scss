@@ -36,6 +36,7 @@
   --point-orange-80: #4D2100;
   --point-orange-90: #381800;
 
+  --normal: #00CE5C; 
   --critical: #FD5154;
   --major: #F38A2F;
   --minor: #FFC44C;
@@ -57,6 +58,7 @@
   --font-size: .9375rem; /* 15px */
   --font-size-13: .8125rem; /* 13px */
   --font-size-14: .875rem; /* 14px */
+  --font-size-16: 1rem; /* 16px */
   --font-size-17: 1.0625rem; /* 17px */
   --font-size-19: 1.1875rem; /* 19px */
   --font-size-20: 1.25rem; /* 20px */
@@ -64,6 +66,7 @@
   --font-size-28: 1.75rem; /* 28px */
   --radius: .5rem; /* 8px */
   --radius-sm: .25rem;/* 4px */
+  --radius-md: .375rem;/* 6px */
   --radius-lg: .75rem; /* 12px */
   --radius-xl: 1.25rem; /* 20px */
   --radius-full: 100%; /* 100% */
@@ -78,6 +81,7 @@
   --spacing-8: calc(8 * var(--spacing)); /* 16px */
   --spacing-9: calc(9 * var(--spacing)); /* 18px */
   --spacing-10: calc(10 * var(--spacing)); /* 20px */
+  --spacing-12: calc(12 * var(--spacing)); /* 24px */
   --spacing-16: calc(16 * var(--spacing)); /* 32px */
   --spacing-20: calc(20 * var(--spacing)); /* 40px */
 }

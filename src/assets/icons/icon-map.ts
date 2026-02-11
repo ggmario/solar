@@ -13,13 +13,11 @@ import IconEye_off from "./icon_eye_off.svg";
 import IconFactory from "./icon_factory.svg";
 import IconFeedback from "./icon_feedback.svg";
 import IconGoogle from "./icon_google.svg";
-import IconGroup from "./icon_group.svg";
 import IconHumidity from "./icon_humidity.svg";
 import IconImp from "./icon_imp.svg";
 import IconKakao from "./icon_kakao.svg";
 import IconLink from "./icon_link.svg";
 import IconLogout from "./icon_logout.svg";
-import IconMember from "./icon_member.svg";
 import IconMenu from "./icon_menu.svg";
 import IconMenu01 from "./icon_menu01.svg";
 import IconMenu02 from "./icon_menu02.svg";
@@ -37,6 +35,9 @@ import IconPower from "./icon_power.svg";
 import IconSolar from "./icon_solar.svg";
 import IconTemp from "./icon_temp.svg";
 import IconWind from "./icon_wind.svg";
+import IconGroup from "./icon_group.svg";
+import IconMember from "./icon_member.svg";
+import IconDownload from "./icon_download.svg";
 
 export const ICON_MAP = {
   alarm: IconAlarm,
@@ -54,13 +55,11 @@ export const ICON_MAP = {
   factory: IconFactory,
   feedback: IconFeedback,
   google: IconGoogle,
-  group: IconGroup,
   humidity: IconHumidity,
   imp: IconImp,
   kakao: IconKakao,
   link: IconLink,
   logout: IconLogout,
-  member: IconMember,
   menu: IconMenu,
   menu01: IconMenu01,
   menu02: IconMenu02,
@@ -78,6 +77,9 @@ export const ICON_MAP = {
   solar: IconSolar,
   temp: IconTemp,
   wind: IconWind,
+  group: IconGroup,
+  member: IconMember,
+  download: IconDownload,
 } as const;
 
 export type IconName = keyof typeof ICON_MAP;

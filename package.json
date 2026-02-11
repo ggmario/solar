@@ -13,6 +13,7 @@
     "deploy": "gh-pages -d dist -r https://github.com/ggmario/solar.git"
   },
   "dependencies": {
+    "ag-grid-react": "^35.0.1",
     "echarts": "^6.0.0",
     "echarts-for-react": "^3.0.5",
     "react": "^19.2.0",

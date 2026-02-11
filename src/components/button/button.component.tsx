@@ -49,6 +49,11 @@ const VARIANT_CONFIG: Record<ButtonVariant, VariantStyle> = {
     hover: { bg: "#D66416", border: "1px solid #D66416" },
     active: { bg: "#BF5512", border: "1px solid #BF5512" },
   },
+  excel: {
+    base: { bg: "#11763E", border: "#11763E", color: "var(--gray-0)" },
+    hover: { bg: "#0A6734" },
+    active: { bg: "#0A6734" },
+  },
   none: {
     base: {
       bg: "transparent",
@@ -99,8 +104,16 @@ export const ButtonComponent: React.FC<ButtonComponentProps> = ({
       justifyContent: "center",
       gap: 2,
 
-      minWidth: isNone ? 'auto' : typeof minWidth === 'number' ? `${minWidth}px` : minWidth,
-      height: isNone ? 'auto' : typeof height === 'number' ? `${height}px` : height,
+      minWidth: isNone
+        ? "auto"
+        : typeof minWidth === "number"
+          ? `${minWidth}px`
+          : minWidth,
+      height: isNone
+        ? "auto"
+        : typeof height === "number"
+          ? `${height}px`
+          : height,
       padding: "0 12px",
       cursor: "pointer",
       transition: "all 0.2s ease-out",

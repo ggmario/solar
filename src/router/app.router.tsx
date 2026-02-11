@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ApprovedLayout } from '@layouts';
 import { ProtectedRouter } from './index';
-import { DashboardPage, MonitoringPage, LoginPage } from '@pages';
+import { DashboardPage, MonitoringPage, FaultMonitoringPage, LoginPage } from '@pages';
 
 export function AppRoutes() {
   return (
@@ -13,6 +13,7 @@ export function AppRoutes() {
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="monitoring" element={<MonitoringPage />} />
+          <Route path="fault-monitoring" element={<FaultMonitoringPage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Route>

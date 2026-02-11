@@ -1,4 +1,4 @@
-import { useState } from "react"; // 👈 useState 추가
+import { useState, useEffect } from "react"; // 👈 useState 추가
 import {
   IconComponent,
   Select,
@@ -21,7 +21,6 @@ import {
   LineChartComponent,
 } from "@components";
 import KakaoMap from "@components/kakaoMap/KakaoMap";
-// 👇 이 줄을 추가하세요
 import { useNavigate } from "react-router-dom";
 
 // 데이터와 타입 가져오기
@@ -130,25 +129,52 @@ function PlantSelector() {
 }
 
 function TodayPowerGeneration() {
+  const [tab, setTab] = useState<"time" | "day">("time");
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTab((prev) => (prev === "time" ? "day" : "time"));
+    }, 3500);
+    return () => clearInterval(id);
+  }, []);
+
   return (
-    <Tabs className="s-tabs flex-1">
+    <Tabs
+      className="s-tabs flex-1"
+      selectedKey={tab}
+      onSelectionChange={(key) => setTab(key as "time" | "day")}
+    >
       <InfoGroupComponent
+        className="h-full"
         flex={1}
         minHeight={247}
+        height="100%" 
         title="금일 발전량"
         extra={
-          <TabList aria-label="Today's power generation">
-            <Tab id="time">시간별</Tab>
-            <Tab id="day">일별</Tab>
-          </TabList>
+        <TabList aria-label="Today's power generation" style={{
+          display: "flex",
+          gap: "var(--spacing-2)",
+          height: "36px",
+          padding: "var(--spacing-2)",
+          border: 0,
+          borderRadius: "var(--radius)",
+          background: "#E9E8EB"
+        }}>
+          {/* <Tab id="time">시간별</Tab>
+          <Tab id="day">일별</Tab> */}
+
+          <Tab id="time" style={{ padding: '6px 12px', display: "flex", alignItems: "center", justifyContent: "center", borderRadius:"6px"}}>시간별</Tab>
+          <Tab id="day" style={{ padding: '6px 12px', display: "flex", alignItems: "center", justifyContent: "center", borderRadius:"6px"}}>일별</Tab>
+
+        </TabList>
         }
       >
         <TabPanels>
           <TabPanel id="time">
-            <LineChartComponent />
+            <LineChartComponent type="time" />
           </TabPanel>
           <TabPanel id="day">
-            <LineChartComponent />
+            <LineChartComponent type="day" />
           </TabPanel>
         </TabPanels>
       </InfoGroupComponent>
@@ -309,8 +335,32 @@ export function DashboardPage() {
       </TopBoxComponent>
 
       <div className="group flex-1">
-        <div style={{ flex: 1, background: "#eee" }}>
-          <KakaoMap plants={PLANT_DATA_LIST} onSelect={setSelectedPlant} />
+
+
+        <div className="map-group">
+          <Tabs>
+            <TabList aria-label="맵 유형">
+              <Tab id="basic">기본</Tab>
+              <Tab id="cluster">클러스터</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel id="basic">
+                <KakaoMap plants={PLANT_DATA_LIST} onSelect={setSelectedPlant} />
+                <div className="map-legend">
+                  <span>시설상태</span>
+                  <div className="group">
+                    <span className="dot normal">정상</span>
+                    <span className="dot checking">경고</span>
+                    <span className="dot error">오류</span>
+                    <span className="dot off">오프라인</span>
+                  </div>
+                </div>
+              </TabPanel>
+              <TabPanel id="cluster">
+                <KakaoMap plants={PLANT_DATA_LIST} onSelect={setSelectedPlant} />
+              </TabPanel>
+            </TabPanels>
+          </Tabs> 
         </div>
 
         <div className="row-group" style={{ width: 440 }}>

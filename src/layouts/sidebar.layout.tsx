@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Button, TooltipTrigger, Tooltip } from "react-aria-components";
 import { IconComponent } from "@components";
 import styled from "styled-components";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import Logo from '@assets/images/logo.svg'
+import Logo from "@assets/images/logo.svg";
 
 const DRAWER_WIDTH = 260;
 const CLOSED_WIDTH = 72;
@@ -39,10 +40,11 @@ const SidebarNav = styled.nav<{ $open: boolean }>`
   top: 0;
   left: 0;
   height: 100vh;
-  width: ${(props) => (props.$open ? `${DRAWER_WIDTH}px` : `${CLOSED_WIDTH}px`)};
+  width: ${(props) =>
+    props.$open ? `${DRAWER_WIDTH}px` : `${CLOSED_WIDTH}px`};
   border-left: 1px solid #fff;
   background: #f8f8f8;
-  box-shadow: 0 0 0 0 rgba(36, 107, 235, 0.30);
+  box-shadow: 0 0 0 0 rgba(36, 107, 235, 0.3);
   display: flex;
   flex-direction: column;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -85,10 +87,10 @@ const ToggleButton = styled(Button)<{ $open: boolean }>`
   transition: transform 0.3s ease;
 `;
 
-const ItemRow = styled.div<{ 
-  $isActive: boolean; 
-  $depth: number; 
-  $open: boolean 
+const ItemRow = styled.div<{
+  $isActive: boolean;
+  $depth: number;
+  $open: boolean;
 }>`
   display: flex;
   align-items: center;
@@ -96,14 +98,16 @@ const ItemRow = styled.div<{
   padding: ${(props) => (props.$depth === 0 ? "8px" : "4px")} 12px;
   cursor: pointer;
   border-radius: 4px;
-  background-color: ${(props) => (props.$isActive && props.$depth === 0 ? "#FFEEF4" : "transparent")};
+  background-color: ${(props) =>
+    props.$isActive && props.$depth === 0 ? "#FFEEF4" : "transparent"};
   transition: all 0.2s;
   justify-content: ${(props) => (props.$open ? "space-between" : "center")};
   position: relative;
 `;
 
 const ItemLabel = styled.span<{ $isActive: boolean; $depth: number }>`
-  font-size: ${(props) => (props.$depth === 0 ? "17px" : props.$depth === 1 ? "17px" : "")};
+  font-size: ${(props) =>
+    props.$depth === 0 ? "17px" : props.$depth === 1 ? "17px" : ""};
   font-weight: ${(props) => {
     if (props.$isActive) {
       return 600;
@@ -113,17 +117,17 @@ const ItemLabel = styled.span<{ $isActive: boolean; $depth: number }>`
   }};
   color: ${(props) => {
     if (props.$isActive) {
-      if (props.$depth === 0) return "#D70251"; 
+      if (props.$depth === 0) return "#D70251";
       if (props.$depth === 1) return "#E9437E";
       return "#000";
     }
     if (props.$depth === 0) return "#1d1d1d";
-    return "#3a3a3a";                         
+    return "#3a3a3a";
   }};
 
   ${ItemRow}:focus-visible & {
     color: ${(props) => {
-      if (props.$depth === 0) return "#D70251"; 
+      if (props.$depth === 0) return "#D70251";
       if (props.$depth === 1) return "#E9437E";
       return "#000";
     }};
@@ -136,7 +140,8 @@ const ArrowIconContainer = styled.div<{ $isExpanded: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: ${(props) => (props.$isExpanded ? "rotate(180deg)" : "rotate(0deg)")};
+  transform: ${(props) =>
+    props.$isExpanded ? "rotate(180deg)" : "rotate(0deg)"};
   transition: transform 0.3s ease;
 `;
 
@@ -147,12 +152,19 @@ const StyledTooltip = styled(Tooltip)`
   border-radius: 4px;
   font-size: 13px;
   z-index: 2000;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-  &[data-placement='right'] { margin-left: 8px; }
-  
-  &[data-entering] { opacity: 0; }
-  &[data-entered] { opacity: 1; transition: opacity 0.15s; }
+  &[data-placement="right"] {
+    margin-left: 8px;
+  }
+
+  &[data-entering] {
+    opacity: 0;
+  }
+  &[data-entered] {
+    opacity: 1;
+    transition: opacity 0.15s;
+  }
 `;
 
 // menu data - path 추가
@@ -182,7 +194,14 @@ const menuItems: MenuItem[] = [
     icon: "menu03",
     children: [{ text: "발전소 등록", path: "/plant/register" }],
   },
-  { text: "발전소 모니터링", icon: "menu04", path: "/monitoring" },
+  {
+    text: "발전소 모니터링",
+    icon: "menu04",
+    children: [
+      { text: "운영 모니터링", path: "/monitoring" },
+      { text: "장애 모니터링", path: "/fault-monitoring" },
+    ],
+  },
   { text: "외부기관", icon: "menu05", path: "/external" },
   {
     text: "전력 거래",
@@ -212,8 +231,8 @@ const menuItems: MenuItem[] = [
 // 로고 컴포넌트
 export const LogoComponent = ({ isCollapsed }: { isCollapsed: boolean }) => (
   <h1>
-    <img src={isCollapsed ? Logo : ''} alt="Wiable Energy Exchange" />
-  </h1> 
+    <img src={isCollapsed ? Logo : ""} alt="Wiable Energy Exchange" />
+  </h1>
 );
 
 // NestedListItem
@@ -230,31 +249,37 @@ function NestedListItem({
 }: NestedListItemProps) {
   const hasChildren = item.children && item.children.length > 0;
   const pathString = currentPath.join("/");
-  const isExpanded = expandedPath.join("/").startsWith(pathString) && hasChildren;
+  const isExpanded =
+    expandedPath.join("/").startsWith(pathString) && hasChildren;
 
   // 접근성
-  const handleFocus = () => {
-    if (hasChildren && drawerOpen) {
-      setExpandedPath(currentPath);
-    }
-  };
+  const handleFocus = () => {};
+
+  // const handleFocus = () => {
+  //   if (hasChildren && drawerOpen) {
+  //     setExpandedPath(currentPath);
+  //   }
+  // };
 
   const handleClick = () => {
     setActiveText(item.text);
-    if (item.path && onNavigate) {
-      onNavigate(item.path);
-    }
-        if (hasChildren) {
+
+    if (hasChildren) {
       if (isExpanded) {
         setExpandedPath(currentPath.slice(0, -1));
       } else {
         setExpandedPath(currentPath);
       }
+      return;
+    }
+
+    if (item.path && onNavigate) {
+      onNavigate(item.path);
     }
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <TooltipTrigger delay={0} isDisabled={drawerOpen}>
         <ItemRow
           as={Button}
@@ -264,16 +289,22 @@ function NestedListItem({
           $depth={depth}
           $open={drawerOpen}
           aria-expanded={hasChildren ? isExpanded : undefined}
-          style={{ 
-            paddingLeft: drawerOpen ? `${depth * 12 + 12}px` : 'auto',
-            outline: 'none' // 커스텀 포커스 스타일 권장
+          style={{
+            paddingLeft: drawerOpen ? `${depth * 12 + 12}px` : "auto",
+            outline: "none", // 커스텀 포커스 스타일 권장
           }}
         >
           {/* ... 내부 아이콘 및 라벨 렌더링 (기존과 동일) */}
           {!drawerOpen ? (
-             <div style={{ display: 'flex', minWidth: 24, justifyContent: 'center' }}>
-                <IconComponent name={(item.icon as string) || "menu01"} />
-             </div>
+            <div
+              style={{
+                display: "flex",
+                minWidth: 24,
+                justifyContent: "center",
+              }}
+            >
+              <IconComponent name={(item.icon as string) || "menu01"} />
+            </div>
           ) : (
             <>
               <ItemLabel $isActive={activeText === item.text} $depth={depth}>
@@ -289,10 +320,13 @@ function NestedListItem({
         </ItemRow>
         <StyledTooltip placement="right">{item.text}</StyledTooltip>
       </TooltipTrigger>
-      
+
       {/* 하위 메뉴: isExpanded가 true가 되는 순간 DOM에 생성되어 다음 Tab 대상이 됨 */}
       {hasChildren && isExpanded && drawerOpen && (
-        <div role="group" style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div
+          role="group"
+          style={{ display: "flex", flexDirection: "column", gap: 4 }}
+        >
           {item.children!.map((child, index) => (
             <NestedListItem
               key={`${child.text}-${index}`}
@@ -313,13 +347,17 @@ function NestedListItem({
   );
 }
 // --- SidebarLayout ---
-export function SidebarLayout({ open, handleDrawerToggle, onNavigate }: SidebarLayoutProps) {
+export function SidebarLayout({
+  open,
+  handleDrawerToggle,
+  onNavigate,
+}: SidebarLayoutProps) {
   const [activeText, setActiveText] = useState<string>("현황 대시보드");
   const [expandedPath, setExpandedPath] = useState<string[]>([]);
 
   return (
     <SidebarNav $open={open}>
-      <ScrollContainer style={{ padding: open? '0 20px' : 0  }}>
+      <ScrollContainer style={{ padding: open ? "0 20px" : 0 }}>
         {/* 상단 헤더 */}
         <NavHeader $open={open}>
           {open && <LogoComponent isCollapsed={true} />}
@@ -329,7 +367,11 @@ export function SidebarLayout({ open, handleDrawerToggle, onNavigate }: SidebarL
         </NavHeader>
 
         {/* 메뉴 리스트 */}
-        <div role="navigation" aria-label="메인 메뉴" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div
+          role="navigation"
+          aria-label="메인 메뉴"
+          style={{ display: "flex", flexDirection: "column", gap: 12 }}
+        >
           {menuItems.map((item, index) => (
             <NestedListItem
               key={`${item.text}-${index}`}

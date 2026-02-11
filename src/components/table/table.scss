@@ -1,11 +1,12 @@
-$border-color-header: #afafaf;
-$border-color-cell: #ededed;
-$bg-header: #fafafa;
+$border-color-header:  var(--border-color);
+$border-color-cell: var(--gray-10);
+$bg-header: var(--gray-5);
 $bg-tfoot: #f3f3f3;
 $color-total: #db1946;
 
 .react-aria-Table {
-  border-top: 1px solid #333;
+  border-top: 1px solid var(--gray-90);
+  border-bottom: 2px solid var(--gray-10);
   background: #fff;
   overflow: clip;
   outline: none;
@@ -37,10 +38,10 @@ $color-total: #db1946;
   .react-aria-TableHeader {
     border-bottom: 1px solid $border-color-header;
     background: $bg-header;
-
+    
     .react-aria-Column {
       border: 0;
-      color: #333;
+      font-size: var(--font-size-16);
       font-weight: 500;
     }
   }
@@ -49,6 +50,9 @@ $color-total: #db1946;
   .react-aria-TableBody {
     padding: var(--spacing-1);
 
+    .react-aria-Row {
+      border-bottom: 1px solid var(--border-color);
+    }
     .tfoot {
       background: $bg-tfoot;
 
@@ -62,245 +66,275 @@ $color-total: #db1946;
       font-style: italic;
     }
   }
-}
 
-// 로우 스타일
-.react-aria-Row {
-  outline: none;
-  cursor: default;
-  color: var(--text-color);
-  position: relative;
-  transform: scale(1);
-  transition: background 200ms, color 200ms;
-  -webkit-tap-highlight-color: transparent;
 
-  &tr:last-child {
-    border-radius: 0 0 var(--radius) var(--radius);
+  // 로우 스타일
+  .react-aria-Row {
+    outline: none;
+    cursor: default;
+    border-bottom: 1px solid $border-color-cell;
+    color: var(--text-color);
+    position: relative;
+    transform: scale(1);
+    transition: background 200ms, color 200ms;
+    -webkit-tap-highlight-color: transparent;
+
+    &tr:last-child {
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+
+    &[data-focus-visible] {
+      outline: 2px solid var(--focus-ring-color);
+      outline-offset: -2px;
+    }
+
+    &[data-pressed] {
+      background: var(--gray-100);
+    }
+
+    &:nth-child(2n) {
+      background: #fff;
+      &[data-pressed] {
+        background: var(--gray-200);
+      }
+    }
+
+    &[data-selected] {
+      background: var(--highlight-background);
+      color: var(--highlight-foreground);
+      --focus-ring-color: var(--highlight-foreground);
+
+      &[data-focus-visible],
+      .react-aria-Cell[data-focus-visible] {
+        outline-offset: -4px;
+      }
+
+      &[data-pressed] {
+        background: var(--highlight-background-pressed);
+      }
+    }
+
+    &[data-disabled] {
+      color: var(--text-color-disabled);
+    }
+
+    &[data-href] {
+      cursor: pointer;
+    }
+
+    &[data-dragging] {
+      opacity: 0.6;
+      transform: translateZ(0);
+    }
+
+    &[data-drop-target] {
+      outline: 2px solid var(--highlight-background);
+      background: var(--highlight-overlay);
+      z-index: 4;
+    }
+
+    .drag-button {
+      all: unset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      text-align: center;
+
+      svg {
+        width: var(--spacing-4);
+        height: var(--spacing-4);
+      }
+
+      &[data-focus-visible] {
+        border-radius: var(--radius-sm);
+        outline: 2px solid var(--focus-ring-color);
+      }
+    }
   }
 
-  &[data-focus-visible] {
-    outline: 2px solid var(--focus-ring-color);
-    outline-offset: -2px;
+  // 공통 셀 & 컬럼 스타일
+  .react-aria-Cell,
+  .react-aria-Column {
+    padding: var(--spacing-2);
+    outline: none;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    text-align: center;
+
+    &div {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    &[data-focus-visible] {
+      outline: 2px solid var(--focus-ring-color);
+      outline-offset: -2px;
+    }
   }
 
-  &[data-pressed] {
-    background: var(--gray-100);
-  }
+  // 컬럼 헤더 전용 스타일
+  .react-aria-Column {
+    --button-color: var(--gray);
+    --button-border: transparent;
+    --button-shadow: transparent;
+    --button-border-size: 0px;
+    cursor: default;
+    border-bottom: 0.5px solid var(--border-color);
+    border-inline-end: 0.5px solid var(--border-color);
+    position: relative;
+    z-index: calc(sibling-count() - sibling-index());
 
-  &:nth-child(2n) {
-    background: #fff;
+    &:last-child {
+      border-inline-end: none;
+    }
+
     &[data-pressed] {
       background: var(--gray-200);
     }
-  }
 
-  &[data-selected] {
-    background: var(--highlight-background);
-    color: var(--highlight-foreground);
-    --focus-ring-color: var(--highlight-foreground);
-
-    &[data-focus-visible],
-    .react-aria-Cell[data-focus-visible] {
-      outline-offset: -4px;
+    &[data-sort-direction] {
+      --button-color: var(--tint);
+      &[data-pressed] {
+        background: var(--tint-200);
+      }
     }
 
-    &[data-pressed] {
-      background: var(--highlight-background-pressed);
+    .column-header {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    .column-name {
+      flex: 1;
+      font: inherit;
+      text-align: start;
+      color: inherit;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border-color: transparent;
+      border-radius: var(--radius-sm);
+
+      &[data-focus-visible] {
+        outline: 2px solid var(--focus-ring-color);
+        outline-offset: 2px;
+      }
+    }
+
+    .sort-indicator {
+      padding: 0 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &:not([data-sort-direction]) .sort-indicator {
+      visibility: hidden;
     }
   }
 
-  &[data-disabled] {
-    color: var(--text-color-disabled);
+  // 리사이저 스타일
+  .react-aria-ColumnResizer {
+    width: 1px;
+    border-radius: var(--radius-sm);
+    background-color: var(--gray-500);
+    padding: 0 var(--spacing-2);
+    translate: var(--spacing-4) 0;
+    height: 32px;
+    margin: -16px 0;
+    flex: 0 0 auto;
+    touch-action: none;
+    box-sizing: content-box;
+    background-clip: content-box;
+
+    &[data-resizable-direction="both"] { cursor: ew-resize; }
+    &[data-resizable-direction="left"] { cursor: e-resize; }
+    &[data-resizable-direction="right"] { cursor: w-resize; }
+
+    &[data-focus-visible] {
+      background-color: var(--focus-ring-color);
+      outline: 2px solid var(--focus-ring-color);
+      outline-offset: -2px;
+    }
+
+    &[data-resizing] {
+      width: 2px;
+      background-color: var(--highlight-background);
+    }
   }
 
-  &[data-href] {
-    cursor: pointer;
+  // 일반 셀 스타일
+  .react-aria-Cell {
+    transform: translateZ(0);
+    color: var(--text-color);
+    border: 0;
+
+    &[data-scope="row"] {
+      color: var(--text-color-base);
+      font-weight: 600;
+    }
+
+    // 테두리 반전 및 둥근 모서리
+    &:is(.react-aria-Row:last-child > :first-child) {
+      border-end-start-radius: var(--radius);
+    }
+    &:is(.react-aria-Row:last-child > :last-child) {
+      border-end-end-radius: var(--radius);
+    }
+
+    img {
+      height: 30px;
+      width: 30px;
+      object-fit: cover;
+      display: block;
+    }
   }
 
-  &[data-dragging] {
-    opacity: 0.6;
+  // 드롭 인디케이터 & 체크박스
+  .react-aria-DropIndicator[data-drop-target] {
+    outline: 1px solid var(--highlight-background);
     transform: translateZ(0);
   }
 
-  &[data-drop-target] {
-    outline: 2px solid var(--highlight-background);
-    background: var(--highlight-overlay);
-    z-index: 4;
-  }
-
-  .drag-button {
-    all: unset;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 15px;
-    text-align: center;
-
-    svg {
-      width: var(--spacing-4);
-      height: var(--spacing-4);
-    }
-
-    &[data-focus-visible] {
-      border-radius: 4px;
-      outline: 2px solid var(--focus-ring-color);
-    }
-  }
-}
-
-// 공통 셀 & 컬럼 스타일
-.react-aria-Cell,
-.react-aria-Column {
-  padding: var(--spacing-2);
-  outline: none;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-  text-align: center;
-
-  &div {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
-
-  &[data-focus-visible] {
-    outline: 2px solid var(--focus-ring-color);
-    outline-offset: -2px;
-  }
-}
-
-// 컬럼 헤더 전용 스타일
-.react-aria-Column {
-  --button-color: var(--gray);
-  --button-border: transparent;
-  --button-shadow: transparent;
-  --button-border-size: 0px;
-  cursor: default;
-  border-bottom: 0.5px solid var(--border-color);
-  border-inline-end: 0.5px solid var(--border-color);
-  position: relative;
-  z-index: calc(sibling-count() - sibling-index());
-
-  &:last-child {
-    border-inline-end: none;
-  }
-
-  &[data-pressed] {
-    background: var(--gray-200);
-  }
-
-  &[data-sort-direction] {
-    --button-color: var(--tint);
-    &[data-pressed] {
-      background: var(--tint-200);
+  :where(.react-aria-Row) .react-aria-Checkbox {
+    --checkmark-color: var(--highlight-background);
+    &[data-selected] .indicator {
+      --indicator-color: var(--highlight-foreground);
+      --indicator-shadow: transparent;
     }
   }
 
-  .column-header {
-    display: flex;
-    align-items: center;
-    font-weight: 600;
-  }
+  //vertical
+  &[data-table-type="vertical"] {
+    border-top: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
 
-  .column-name {
-    flex: 1;
-    font: inherit;
-    text-align: start;
-    color: inherit;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border-color: transparent;
-    border-radius: var(--radius-sm);
+    .react-aria-TableBody {
+      .react-aria-Row {
+        border-bottom: 1px solid var(--gray-30);
 
-    &[data-focus-visible] {
-      outline: 2px solid var(--focus-ring-color);
-      outline-offset: 2px;
+        &:last-child {
+          border-bottom: 0;
+        }
+        .react-aria-Cell {
+          height: 58px;
+          padding: var(--spacing-4) var(--spacing-10);
+          color: var(--text-color);
+          font-size: var(--font-size-17);
+          text-align: left;
+
+          &[data-scope=row] {
+            background-color: #F4F3F6;
+          }
+          
+        }
+      }
     }
   }
-
-  .sort-indicator {
-    padding: 0 2px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &:not([data-sort-direction]) .sort-indicator {
-    visibility: hidden;
-  }
 }
-
-// 리사이저 스타일
-.react-aria-ColumnResizer {
-  width: 1px;
-  border-radius: var(--radius-sm);
-  background-color: var(--gray-500);
-  padding: 0 var(--spacing-2);
-  translate: var(--spacing-4) 0;
-  height: 32px;
-  margin: -16px 0;
-  flex: 0 0 auto;
-  touch-action: none;
-  box-sizing: content-box;
-  background-clip: content-box;
-
-  &[data-resizable-direction="both"] { cursor: ew-resize; }
-  &[data-resizable-direction="left"] { cursor: e-resize; }
-  &[data-resizable-direction="right"] { cursor: w-resize; }
-
-  &[data-focus-visible] {
-    background-color: var(--focus-ring-color);
-    outline: 2px solid var(--focus-ring-color);
-    outline-offset: -2px;
-  }
-
-  &[data-resizing] {
-    width: 2px;
-    background-color: var(--highlight-background);
-  }
-}
-
-// 일반 셀 스타일
-.react-aria-Cell {
-  transform: translateZ(0);
-  border-bottom: 1px solid $border-color-cell;
-  color: #6b6b6b;
-
-  &[data-scope="row"] {
-    color: #333;
-  }
-
-  // 테두리 반전 및 둥근 모서리
-  &:is(.react-aria-Row:last-child > :first-child) {
-    border-end-start-radius: var(--radius);
-  }
-  &:is(.react-aria-Row:last-child > :last-child) {
-    border-end-end-radius: var(--radius);
-  }
-
-  img {
-    height: 30px;
-    width: 30px;
-    object-fit: cover;
-    display: block;
-  }
-}
-
-// 드롭 인디케이터 & 체크박스
-.react-aria-DropIndicator[data-drop-target] {
-  outline: 1px solid var(--highlight-background);
-  transform: translateZ(0);
-}
-
-:where(.react-aria-Row) .react-aria-Checkbox {
-  --checkmark-color: var(--highlight-background);
-  &[data-selected] .indicator {
-    --indicator-color: var(--highlight-foreground);
-    --indicator-shadow: transparent;
-  }
-}
-
 // 리사이저 컨테이너 스타일
 .react-aria-ResizableTableContainer {
   width: 100%;
@@ -335,4 +369,19 @@ $color-total: #db1946;
 .react-aria-TableLoadingIndicator {
   height: 32px;
   position: relative;
+}
+
+//modal
+body .react-aria-Modal {
+  .react-aria-Table {
+    &[data-table-type="vertical"] {
+      .react-aria-TableBody {
+      .react-aria-Row {
+          .react-aria-Cell {
+            height: 40px !important;
+          }
+        }
+      }
+    }
+  }
 }

@@ -7,17 +7,32 @@ interface DataPoint {
   value: number;
 }
 
-interface LineChartProps {
+type Props = {
+  type: 'time' | 'day';
   data?: DataPoint[];
-}
+};
 
-export function LineChartComponent({ data }: LineChartProps) {
+export function LineChartComponent({ type, data }: Props) {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
   const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
-  const chartData = useMemo(() => {
-    return data || [
+  const chartData = useMemo<DataPoint[]>(() => {
+    if (data?.length) return data;
+
+    if (type === 'day') {
+      return [
+        { time: '01-01', value: 120 },
+        { time: '01-02', value: 90 },
+        { time: '01-03', value: 160 },
+        { time: '01-04', value: 80 },
+        { time: '01-05', value: 140 },
+        { time: '01-06', value: 110 },
+        { time: '01-07', value: 170 },
+      ];
+    }
+
+    return [
       { time: '00:00', value: 35 },
       { time: '01:00', value: 50 },
       { time: '02:00', value: 20 },
@@ -26,23 +41,27 @@ export function LineChartComponent({ data }: LineChartProps) {
       { time: '07:00', value: 40 },
       { time: '09:00', value: 45 },
       { time: '10:00', value: 70 },
-      { time: '10:00', value: 70 },
-      { time: '10:00', value: 40 },
-      { time: '10:00', value: 80 },
-      { time: '10:00', value: 50 },
-      { time: '10:00', value: 40 },
-      { time: '10:00', value: 20 },
-      { time: '10:00', value: 90 },
-      { time: '10:00', value: 120 },
-      { time: '10:00', value: 70 },
-      { time: '10:00', value: 40 },
+      { time: '11:00', value: 40 },
+      { time: '12:00', value: 80 },
+      { time: '13:00', value: 50 },
+      { time: '14:00', value: 40 },
+      { time: '15:00', value: 20 },
+      { time: '16:00', value: 90 },
+      { time: '17:00', value: 120 },
+      { time: '18:00', value: 70 },
+      { time: '19:00', value: 40 },
       { time: '20:00', value: 20 },
-      { time: '20:00', value: 10 },
-      { time: '20:00', value: 20 },
-      { time: '20:00', value: 20 },
+      { time: '21:00', value: 10 },
+      { time: '22:00', value: 20 },
+      { time: '23:00', value: 20 },
       { time: '24:00', value: 35 },
     ];
-  }, [data]);
+  }, [data, type]);
+
+  const xLabelFormatter = useMemo(() => {
+    if (type === 'day') return (v: string) => v;
+    return (v: string) => v;
+  }, [type]);
 
   const option: EChartsOption = useMemo(() => {
     return {
@@ -67,6 +86,13 @@ export function LineChartComponent({ data }: LineChartProps) {
         },
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
         textStyle: { color: '#333' },
+        formatter: (params: any) => {
+          const p = params?.[0];
+          const x = p?.axisValue ?? '';
+          const y = p?.data ?? '';
+          const label = type === 'day' ? '일별' : '시간별';
+          return `${label}<br/>${x} : ${y}`;
+        },
       },
       xAxis: {
         type: 'category',
@@ -78,6 +104,7 @@ export function LineChartComponent({ data }: LineChartProps) {
           color: '#615E83',
           fontSize: 12,
           margin: 15,
+          formatter: xLabelFormatter as any,
         },
         splitLine: {
           show: true,
@@ -93,7 +120,7 @@ export function LineChartComponent({ data }: LineChartProps) {
       },
       series: [
         {
-          name: 'Value',
+          name: type === 'day' ? 'Day' : 'Time',
           type: 'line',
           data: chartData.map(item => item.value),
           smooth: 0.4,
@@ -124,20 +151,17 @@ export function LineChartComponent({ data }: LineChartProps) {
         },
       ],
     };
-  }, [chartData]);
+  }, [chartData, type, xLabelFormatter]);
 
   useEffect(() => {
     if (!chartRef.current) return;
 
-    // 차트 인스턴스 생성
     if (!chartInstance.current) {
       chartInstance.current = echarts.init(chartRef.current);
     }
-    chartInstance.current.setOption(option);
+    chartInstance.current.setOption(option, true);
 
-    // ResizeObserver 설정 - 차트 자체와 모든 부모 요소를 관찰
     const handleResize = () => {
-      // 약간의 지연을 주어 DOM이 완전히 업데이트된 후 리사이즈
       requestAnimationFrame(() => {
         chartInstance.current?.resize();
       });
@@ -145,28 +169,17 @@ export function LineChartComponent({ data }: LineChartProps) {
 
     resizeObserverRef.current = new ResizeObserver(handleResize);
 
-    // 차트 div와 여러 부모 요소를 모두 관찰
-    let element = chartRef.current;
-    const observedElements: Element[] = [];
-    
-    // 최대 5단계 부모까지 관찰
+    let element: HTMLDivElement | null = chartRef.current;
     for (let i = 0; i < 5 && element; i++) {
       resizeObserverRef.current.observe(element);
-      observedElements.push(element);
-      element = element.parentElement as HTMLDivElement;
+      element = element.parentElement as HTMLDivElement | null;
     }
 
-    // window resize도 처리
-    const windowResizeHandler = () => {
-      handleResize();
-    };
-    window.addEventListener('resize', windowResizeHandler);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      if (resizeObserverRef.current) {
-        resizeObserverRef.current.disconnect();
-      }
-      window.removeEventListener('resize', windowResizeHandler);
+      resizeObserverRef.current?.disconnect();
+      window.removeEventListener('resize', handleResize);
       chartInstance.current?.dispose();
       chartInstance.current = null;
     };
