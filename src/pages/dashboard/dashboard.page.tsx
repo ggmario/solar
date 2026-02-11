@@ -145,7 +145,6 @@ function TodayPowerGeneration() {
       onSelectionChange={(key) => setTab(key as "time" | "day")}
     >
       <InfoGroupComponent
-        className="h-full"
         flex={1}
         minHeight={247}
         height="100%" 

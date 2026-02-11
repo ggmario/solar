@@ -5,7 +5,7 @@ import { Button, ButtonProps } from "react-aria-components";
 import "./button.component.scss";
 
 type RadiusVariant = "none" | "sm" | "md" | "lg" | "full";
-type ButtonVariant = "contained" | "outlined" | "third" | "none";
+type ButtonVariant = "contained" | "outlined" | "third" | "excel" | "none";
 
 interface ButtonComponentProps extends ButtonProps {
   children?: ReactNode;
