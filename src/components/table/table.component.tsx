@@ -28,22 +28,30 @@ type AriaTableComponentProps = React.ComponentProps<typeof AriaTable>;
 export type TableProps = AriaTableComponentProps & {
   type?: TableType;
   cellWidth?: number;
+
+  // ✅ 사용부에서 data-table-type="vertical"로 쓰는 케이스 호환
+  "data-table-type"?: TableType;
 };
 
 export function Table({
   type = "horizontal",
   cellWidth = 160,
   style,
+  "data-table-type": dataTableType,
   ...props
 }: TableProps) {
+  const resolvedType: TableType = dataTableType ?? type;
+
   return (
     <AriaTable
       {...props}
-      data-table-type={type}
+      data-table-type={resolvedType}
       style={
         {
           ...style,
-          ...(type === "vertical" ? { "--label-width": `${cellWidth}px` } : {}),
+          ...(resolvedType === "vertical"
+            ? { "--label-width": `${cellWidth}px` }
+            : {}),
         } as React.CSSProperties
       }
     />
