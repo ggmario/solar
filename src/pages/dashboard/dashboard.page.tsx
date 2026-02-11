@@ -312,7 +312,7 @@ function PlantDetailSection({ data }: { data: PlantData }) {
       </ButtonComponent>
     </InfoGroupComponent>
   );
-}
+} //
 
 // 메인 컴포넌트
 export function DashboardPage() {
