@@ -55,8 +55,8 @@ const WEATHER_DATA: WeatherItem[] = [
   { icon: "humidity", title: "습도", count: 45, unit: "%" },
   { icon: "wind", title: "풍속", count: 3.2, unit: "m/s" },
   { icon: "solar", title: "일사량", count: 500, unit: "W/m²" },
-  { icon: "dust", title: "PM10", count: 30, unit: "μg/m³" },
-  { icon: "dust", title: "PM2.5", count: 15, unit: "μg/m³" },
+  { icon: "dust", title: "PM10", count: 71, unit: "μg/m³" },
+  { icon: "dust", title: "PM2.5", count: 64, unit: "μg/m³" },
 ];
 
 const PLANT_SUMMARY_DATA: SummaryItem[] = [
@@ -83,8 +83,8 @@ const PLANT_DATA: Record<string, PlantDataItem> = {
       {icon: "humidity", title: "습도", count: 45, unit: "%" },
       {icon: "wind", title: "풍속", count: 3.2, unit: "m/s" },
       {icon: "solar", title: "일사량", count: 500, unit: "W/m²" },
-      {icon: "dust", title: "PM10", count: 30, unit: "μg/m³" },
-      {icon: "dust", title: "PM2.5", count: 15, unit: "μg/m³" },
+      {icon: "dust", title: "PM10", count: 39, unit: "μg/m³" },
+      {icon: "dust", title: "PM2.5", count: 32, unit: "μg/m³" },
     ],
     summary: [
       {icon: "energy",title: "현재출력",count: 1245.2,totalCount: 15000,unit: "kW",},
@@ -110,8 +110,8 @@ const PLANT_DATA: Record<string, PlantDataItem> = {
       { icon: "humidity", title: "습도", count: 52, unit: "%" },
       { icon: "wind", title: "풍속", count: 2.6, unit: "m/s" },
       { icon: "solar", title: "일사량", count: 420, unit: "W/m²" },
-      { icon: "dust", title: "PM10", count: 28, unit: "μg/m³" },
-      { icon: "dust", title: "PM2.5", count: 14, unit: "μg/m³" },
+      { icon: "dust", title: "PM10", count: 48, unit: "μg/m³" },
+      { icon: "dust", title: "PM2.5", count: 36, unit: "μg/m³" },
     ],
     summary: [
       {icon: "energy",title: "현재출력",count: 980.4,totalCount: 12000,unit: "kW",},
@@ -137,8 +137,8 @@ const PLANT_DATA: Record<string, PlantDataItem> = {
       { icon: "humidity", title: "습도", count: 41, unit: "%" },
       { icon: "wind", title: "풍속", count: 4.1, unit: "m/s" },
       { icon: "solar", title: "일사량", count: 610, unit: "W/m²" },
-      { icon: "dust", title: "PM10", count: 34, unit: "μg/m³" },
-      { icon: "dust", title: "PM2.5", count: 18, unit: "μg/m³" },
+      { icon: "dust", title: "PM10", count: 76, unit: "μg/m³" },
+      { icon: "dust", title: "PM2.5", count: 64, unit: "μg/m³" },
     ],
     summary: [
       {icon: "energy",title: "현재출력",count: 1422.6,totalCount: 16000,unit: "kW",},
